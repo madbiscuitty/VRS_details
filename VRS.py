@@ -53,10 +53,10 @@ class Window:
         self.root.mainloop()
 
     def draw_widgets(self):
-        Label(self.root, text="Введите номер VRS:", justify=LEFT).grid(row=0, column=0, sticky=W)                                   # вывод строки с текстом
+        Label(self.root, text="Выберите типоразмер VRS:", justify=LEFT).grid(row=0, column=0, sticky=W)                                   # вывод строки с текстом
         self.vrs_num.grid(row=0, column=1, sticky=W + E, padx=5, pady=5)                                                            # вывод выпадающего меню
         self.vrs_num.current(0)                                                                                                     # устанавливаем дефолтную позицию выпадающего меню
-        Label(self.root, text="Введите номер исполнения:", justify=LEFT).grid(row=1, column=0, sticky=W)                            # вывод строки с текстом
+        Label(self.root, text="Выберите исполнение VRS:", justify=LEFT).grid(row=1, column=0, sticky=W)                            # вывод строки с текстом
         self.vrs_perf.grid(row=1, column=1, sticky=W + E, padx=5, pady=5)                                                          # вывод выпадающего меню
         self.vrs_perf.current(0)                                                                                                    # устанавливаем дефолтную позицию выпадающего меню
         Label(self.root, text="Выберите блоки и количество:", justify=LEFT).grid(row=2, column=0, sticky=W)                         # вывод строки с текстом
