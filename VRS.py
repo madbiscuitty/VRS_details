@@ -2,13 +2,14 @@ from openpyxl import *
 from tkinter import *
 from tkinter import messagebox
 from tkinter.ttk import Combobox
+from table_var import *
 
 wb_form = load_workbook(filename=r'resourses/vrs_details.xlsx', read_only=True)
 wb = Workbook()
 ws = wb.active
 ws.title = 'Project'
 
-class Window:
+class VRS:
     def __init__(self, width, height, title="MyWindow", resizable=(False, False), icon=r"resourses/icon.ico"):
         self.root = Tk()
         self.root.title(title)
@@ -35,17 +36,18 @@ class Window:
         self.vertklapbox = IntVar()
         self.ppbox = IntVar()
         self.promkambox = IntVar()
-        self.entryfilter = Spinbox(self.root, values=(1, 2, 3, 4, 5, 6, 7, 8, 9, 10), bd=2)  # заводим спинбокс
-        self.entryvent = Spinbox(self.root, values=(1, 2, 3, 4, 5, 6, 7, 8, 9, 10), width=7, bd=2)
-        self.entryvent2 = Spinbox(self.root, values=(1, 2, 3, 4, 5, 6, 7, 8, 9, 10), width=7, bd=2)
-        self.entryvnv5012 = Spinbox(self.root, values=(1, 2, 3, 4, 5, 6, 7, 8, 9, 10), width=7, bd=2)
-       # self.entryvnv4816 = Spinbox(self.root, values=(1, 2, 3, 4, 5, 6, 7, 8, 9, 10), width=7, bd=2)
-        self.entryvov5012 = Spinbox(self.root, values=(1, 2, 3, 4, 5, 6, 7, 8, 9, 10), width=7, bd=2)
-       # self.entryvov4816 = Spinbox(self.root, values=(1, 2, 3, 4, 5, 6, 7, 8, 9, 10), width=7, bd=2)
-        self.entryeko = Spinbox(self.root, values=(1, 2, 3, 4, 5, 6, 7, 8, 9, 10), bd=2)
-        self.entryvertklap = Spinbox(self.root, values=(1, 2, 3, 4, 5, 6, 7, 8, 9, 10), bd=2)
-        self.entrypp = Spinbox(self.root, values=(1, 2, 3, 4, 5, 6, 7, 8, 9, 10), bd=2)
-        self.entrypromkam = Spinbox(self.root, values=(1, 2, 3, 4, 5, 6, 7, 8, 9, 10), bd=2)
+        count = (1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+        self.entryfilter = Spinbox(self.root, values=(count), bd=2)  # заводим спинбокс
+        self.entryvent = Spinbox(self.root, values=(count), width=7, bd=2)
+        self.entryvent2 = Spinbox(self.root, values=(count), width=7, bd=2)
+        self.entryvnv5012 = Spinbox(self.root, values=(count), width=7, bd=2)
+       # self.entryvnv4816 = Spinbox(self.root, values=(count), width=7, bd=2)
+        self.entryvov5012 = Spinbox(self.root, values=(count), width=7, bd=2)
+       # self.entryvov4816 = Spinbox(self.root, values=(count), width=7, bd=2)
+        self.entryeko = Spinbox(self.root, values=(count), bd=2)
+        self.entryvertklap = Spinbox(self.root, values=(count), bd=2)
+        self.entrypp = Spinbox(self.root, values=(count), bd=2)
+        self.entrypromkam = Spinbox(self.root, values=(count), bd=2)
 
 
     def run(self):
@@ -97,7 +99,7 @@ class Window:
 
         Button(self.root, width=6, height=2, text="Выгрузить", font=("Ghost type A", 9, "bold"), command=self.action).grid(row=13, column=0, sticky=W+E)                        # Кнопка выгрузки
         Button(self.root, width=6, height=2, text="Закрыть", command=self.root.destroy).grid(row=13, column=1, columnspan=2, sticky=W+E)                           # Кнопка закрытия
-        Label(self.root, text="v0.0.3 alfa", justify=LEFT).grid(column=2, sticky=E)
+        Label(self.root, text="v0.0.4 alfa", justify=LEFT).grid(column=2, sticky=E)
 
    # def exit(self):
    #     choice = messagebox.askyesno("Quit", "Do you want to quit?")
@@ -106,8 +108,10 @@ class Window:
 
 
     def action(self):
+        global sheet_form
         vrs_num = self.vrs_num.get()
         vrs_perf = self.vrs_perf.get()
+        #форматирование заголовка в выводимой таблице
         ws.cell(row=1, column=1).value = 'Перечень VRS-500-' + vrs_num + '-' + vrs_perf
         ws.cell(row=2, column=1).value = 'Обозначение'
         ws.cell(row=2, column=2).value = 'Наименование'
@@ -129,64 +133,7 @@ class Window:
             elif vrs_perf == '03' or vrs_perf == '04':
                 sheet_form = wb_form['Filter-03(04)']  # переходим на вкладку 03 исполнения
 
-            #Присваиваем диапазон ячеек согласно номеру VRS
-            if vrs_num == '019':
-                cells = sheet_form['A5':'D13']
-            elif vrs_num == '034':
-                cells = sheet_form['A18':'D26']
-            elif vrs_num == '039':
-                cells = sheet_form['A31':'D39']
-            elif vrs_num == '054':
-                cells = sheet_form['A44':'D53']
-            elif vrs_num == '058':
-                cells = sheet_form['A58':'D67']
-            elif vrs_num == '078':
-                cells = sheet_form['A72':'D81']
-            elif vrs_num == '086':
-                cells = sheet_form['A86':'D97']
-            elif vrs_num == '097':
-                cells = sheet_form['A102':'D111']
-            elif vrs_num == '115':
-                cells = sheet_form['A116':'D127']
-            elif vrs_num == '116':
-                cells = sheet_form['A132':'D140']
-            elif vrs_num == '138':
-                cells = sheet_form['A145':'D154']
-            elif vrs_num == '156':
-                cells = sheet_form['A159':'D168']
-            elif vrs_num == '173':
-                cells = sheet_form['A173':'D184']
-            elif vrs_num == '193':
-                cells = sheet_form['A189':'D198']
-            elif vrs_num == '194':
-                cells = sheet_form['A203':'D214']
-            elif vrs_num == '215':
-                cells = sheet_form['A219':'D228']
-            elif vrs_num == '234':
-                cells = sheet_form['A233':'D242']
-            elif vrs_num == '240':
-                cells = sheet_form['A247':'D258']
-            elif vrs_num == '271':
-                cells = sheet_form['A263':'D272']
-            elif vrs_num == '289':
-                cells = sheet_form['A277':'D288']
-            elif vrs_num == '290':
-                cells = sheet_form['A293':'D304']
-            elif vrs_num == '333':
-                cells = sheet_form['A309':'D318']
-            elif vrs_num == '337':
-                cells = sheet_form['A323':'D334']
-            elif vrs_num == '350':
-                cells = sheet_form['A339':'D350']
-            elif vrs_num == '407':
-                cells = sheet_form['A355':'D366']
-            elif vrs_num == '414':
-                cells = sheet_form['A371':'D382']
-            elif vrs_num == '473':
-                cells = sheet_form['A387':'D398']
-            elif vrs_num == '500':
-                cells = sheet_form['A403':'D414']
-
+            cells = table(vrs_num, filter_block)
             for sign, name, amount, material in cells:
                 # print(sign.value, name.value, amount.value, material.value) # выводим нужные строки
                 ws.append([sign.value, name.value, int(amount.value*filteramount), material.value])
@@ -203,77 +150,20 @@ class Window:
             elif vrs_perf == '03' or vrs_perf == '04':
                 sheet_form = wb_form['Filter-03(04)']  # переходим на вкладку 03 исполнения
 
-            # Присваиваем диапазон ячеек согласно номеру VRS
-            if vrs_num == '019':
-                cells = sheet_form['A5':'D13']
-            elif vrs_num == '034':
-                cells = sheet_form['A18':'D26']
-            elif vrs_num == '039':
-                cells = sheet_form['A31':'D39']
-            elif vrs_num == '054':
-                cells = sheet_form['A44':'D53']
-            elif vrs_num == '058':
-                cells = sheet_form['A58':'D67']
-            elif vrs_num == '078':
-                cells = sheet_form['A72':'D81']
-            elif vrs_num == '086':
-                cells = sheet_form['A86':'D97']
-            elif vrs_num == '097':
-                cells = sheet_form['A102':'D111']
-            elif vrs_num == '115':
-                cells = sheet_form['A116':'D127']
-            elif vrs_num == '116':
-                cells = sheet_form['A132':'D140']
-            elif vrs_num == '138':
-                cells = sheet_form['A145':'D154']
-            elif vrs_num == '156':
-                cells = sheet_form['A159':'D168']
-            elif vrs_num == '173':
-                cells = sheet_form['A173':'D184']
-            elif vrs_num == '193':
-                cells = sheet_form['A189':'D198']
-            elif vrs_num == '194':
-                cells = sheet_form['A203':'D214']
-            elif vrs_num == '215':
-                cells = sheet_form['A219':'D228']
-            elif vrs_num == '234':
-                cells = sheet_form['A233':'D242']
-            elif vrs_num == '240':
-                cells = sheet_form['A247':'D258']
-            elif vrs_num == '271':
-                cells = sheet_form['A263':'D272']
-            elif vrs_num == '289':
-                cells = sheet_form['A277':'D288']
-            elif vrs_num == '290':
-                cells = sheet_form['A293':'D304']
-            elif vrs_num == '333':
-                cells = sheet_form['A309':'D318']
-            elif vrs_num == '337':
-                cells = sheet_form['A323':'D334']
-            elif vrs_num == '350':
-                cells = sheet_form['A339':'D350']
-            elif vrs_num == '407':
-                cells = sheet_form['A355':'D366']
-            elif vrs_num == '414':
-                cells = sheet_form['A371':'D382']
-            elif vrs_num == '473':
-                cells = sheet_form['A387':'D398']
-            elif vrs_num == '500':
-                cells = sheet_form['A403':'D414']
-
+            cells = table(vrs_num, vent_block)
             for sign, name, amount, material in cells:
                 #print(sign.value, name.value, amount.value, material.value) #проверяем в консоли на вывод нужных строк
                 ws.append([sign.value, name.value, int(amount.value * ventamount), material.value])
 
 
 
-        if self.filterbox.get() == 0 and self.ventbox.get() == 0:
+        if self.filterbox.get() == 0 and self.ventbox.get() == 0 and self.vent2box.get() == 0 and self.vnv5012box.get() == 0 and self.vov5012box.get() == 0 and self.ekobox.get() == 0 and self.vertklapbox.get() == 0 and self.ppbox.get() == 0 and self.promkambox.get() == 0:
             messagebox.showerror("VRS", "Выберите хотя бы 1 блок")
 
-        if self.filterbox.get() == 1 or self.ventbox.get() == 1:
+        if self.filterbox.get() == 1 or self.ventbox.get() == 1 or self.vent2box.get() == 1 or self.vnv5012box.get() == 1 or self.vov5012box.get() == 1 or self.ekobox.get() == 1 or self.vertklapbox.get() == 1 or self.ppbox.get() == 1 or self.promkambox.get() == 1:
             wb.save('Перечень VRS-500-' + vrs_num + '-' + vrs_perf + '.xlsx')
             messagebox.showinfo("VRS", 'Перечень VRS-500-' + vrs_num + '-' + vrs_perf + '\nвыгружен в корень папки')
 
 if __name__ == "__main__":
-    window = Window(460, 200, "Перечень деталей")
-    window.run()
+    program = VRS(460, 200, "Перечень деталей")
+    program.run()
