@@ -1,8 +1,11 @@
 from openpyxl import *
+from tkinter import messagebox
 
 wb_form = load_workbook(filename=r'resourses/vrs_details.xlsx', read_only=True)
 
+
 def fb_table(vrs_num, vrs_perf):
+
     if vrs_perf == '01':
         sheet_form = wb_form['Filter-01']  # переходим на вкладку 01 исполнения
     elif vrs_perf == '02':
@@ -45,6 +48,9 @@ def fb_table(vrs_num, vrs_perf):
         if key == vrs_num:
             cells = filter_table[key]
             break
+        else:
+            messagebox.showerror('Error', 'Что-то пошло не так')
+            break
     return cells
 
 
@@ -66,6 +72,9 @@ def vent_table(vrs_num, vrs_perf, vosk):
         if key == vrs_num + vosk:
             vent = vent_table[key]
             break
+        else:
+            messagebox.showerror('Error', 'Что-то пошло не так')
+            break
     return vent
 
 def vent2_table(vrs_num, vrs_perf, vosk):
@@ -85,6 +94,9 @@ def vent2_table(vrs_num, vrs_perf, vosk):
     for key in vent_table.keys():
         if key == vrs_num + vosk:
             vent2 = vent_table[key]
+            break
+        else:
+            messagebox.showerror('Error', 'Что-то пошло не так')
             break
     return vent2
 
@@ -107,6 +119,9 @@ def air_table(vrs_perf, air):
         if key == air:
             air = air_table[key]
             break
+        else:
+            messagebox.showerror('Error', 'Что-то пошло не так')
+            break
     return air
 
 def air2_table(vrs_perf, air2):
@@ -127,6 +142,9 @@ def air2_table(vrs_perf, air2):
     for key in air_table.keys():
         if key == air2:
             air2 = air_table[key]
+            break
+        else:
+            messagebox.showerror('Error', 'Что-то пошло не так')
             break
     return air2
 def vnv5012_table():

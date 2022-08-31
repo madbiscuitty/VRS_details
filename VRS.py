@@ -1,22 +1,24 @@
+import tkinter
+
 from openpyxl import *
 from tkinter import *
-from tkinter import messagebox
+from tkinter import ttk
 from tkinter.ttk import Combobox
+from PIL import Image, ImageTk
 from table_var import *
 
-wb = Workbook()
-ws = wb.active
-#wb.worksheets[sht].clear()
-ws.title = 'Project'
+# Открываем excel документ
 
 class VRS:
-    def __init__(self, width, height, title="MyWindow", resizable=(False, False), icon=r"resourses/icon.ico"):
+    def __init__(self, title="", resizable=(False, False), icon=r"resourses/icon.ico"):
         self.root = Tk()
+        self.root.configure(bg='#dbdbdb')
         self.root.title(title)
         self.root.resizable(resizable[0], resizable[1])
         if icon:
             self.root.iconbitmap(icon)
-        #объекты виджетов окна
+
+        # Объекты виджетов окна
         self.vrs_num = Combobox(self.root, values=("019", "034", "039", "054", "058", "078", "086", "097", "115",
                                                    "116", "138", "156", "173", "193", "194", "215", "234", "240",
                                                    "271", "289", "290", "333", "337", "350", "407", "414", "473",
@@ -58,97 +60,126 @@ class VRS:
         self.entrypp = Spinbox(self.root, values=(count), bd=2)
         self.entrypromkam = Spinbox(self.root, values=(count), bd=2)
 
-    #Запуск окна программы
+    # Запуск окна программы
     def run(self):
         self.draw_widgets()
         self.root.mainloop()
-    #Построение окна программы
+    # Построение окна программы
     def draw_widgets(self):
-        Label(self.root, text="Выберите типоразмер VRS:", justify=LEFT, font=("", 9, "bold")).grid(row=0, column=0,
-                                                                                                    sticky=W)
-        self.vrs_num.grid(row=0, column=1, columnspan=3, sticky=W + E, padx=5, pady=5)
+        deFont = ("Roboto", 10, "bold")
+        bgColor = '#dbdbdb'
+        # Вставляем лого
+        self.logo_upload = Image.open('resourses/upload.png')
+        self.logo_close = Image.open('resourses/close.png')
+        self.logo_question = Image.open('resourses/question.png')
+        self.logo = Image.open('resourses/logo.png')
+        self.logo_upload = self.logo_upload.resize((242, 42), Image.Resampling.LANCZOS)
+        self.logo_close = self.logo_close.resize((230, 42), Image.Resampling.LANCZOS)
+        self.logo_question = self.logo_question.resize((25, 25), Image.Resampling.LANCZOS)
+        self.logo = self.logo.resize((461, 54), Image.Resampling.LANCZOS)
+        self.logo_upload = ImageTk.PhotoImage(self.logo_upload)
+        self.logo_close = ImageTk.PhotoImage(self.logo_close)
+        self.logo_question = ImageTk.PhotoImage(self.logo_question)
+        self.logo = ImageTk.PhotoImage(self.logo)
+        self.logo_label_upload = Label(image=self.logo_upload)
+        self.logo_label_close = Label(image=self.logo_close)
+        self.logo_label_question = Label(image=self.logo_question)
+        self.logo_label = Label(image=self.logo)
+        self.logo_label_upload.image = self.logo_upload
+        self.logo_label_close.image = self.logo_close
+        self.logo_label_question.image = self.logo_question
+        self.logo_label.image = self.logo
+
+        self.logo_label.grid(row=0, column=0, columnspan=4)
+        Label(self.root, text="Выберите типоразмер VRS:", justify=LEFT, bg = bgColor, font=deFont).grid(
+                                                                        row=1, column=0, sticky=W)
+        self.vrs_num.grid(row=1, column=1, columnspan=3, sticky=W + E, padx=5, pady=8)
         self.vrs_num.current(0)                                                                                                     # устанавливаем дефолтную позицию выпадающего меню
-        Label(self.root, text="Выберите исполнение VRS:", justify=LEFT, font=("", 10, "bold")).grid(row=1, column=0, sticky=W)
-        self.vrs_perf.grid(row=1, column=1, columnspan=3, sticky=W + E, padx=5, pady=5)       # вывод выпадающего меню
+        Label(self.root, text="Выберите исполнение VRS:", justify=LEFT, bg = bgColor, font=deFont).grid(row=2,
+                                                                                                         column=0,
+                                                                                                     sticky=W)
+        self.vrs_perf.grid(row=2, column=1, columnspan=3, sticky=W + E, padx=5, pady=8)       # вывод выпадающего меню
         self.vrs_perf.current(0)                                                                                                    # устанавливаем дефолтную позицию выпадающего меню
-        Label(self.root, text="Выберите параметры блоков:", justify=LEFT, font=("", 12, "bold")).grid(
-            row=2, column=0, sticky=W) # вывод строки с текстом
-        Button(self.root, width=2, height=1, text="?", command=self.info).grid(row=2, column=1, sticky=W)
-        Checkbutton(self.root, text="Блок фильтра", justify=LEFT, font=("", 9, "bold"), variable=self.filterbox).grid(
-            row=3, column=0,
-                                                                                                 sticky=W)          # строка чекбокса
-        self.entryfilter.grid(row=3, column=1, columnspan=3, sticky=W+E, padx=5, pady=5)  # рисуем спинбокс
-        Checkbutton(self.root, text="Блок вентилятора ВОСК", font=("", 9, "bold"), justify=LEFT,
-                    variable=self.ventbox).grid(row=4,
-                                                                                                       column=0, sticky=W)   # строка чекбокса
-        self.vosk.grid(row=4, column=1, sticky=W, padx=5, pady=5)
+        Label(self.root, text="Выберите параметры блоков:", justify=LEFT, bg = bgColor, font=("Roboto", 12,
+                                                                        "bold")).grid(row=3, column=0, sticky=W) # вывод строки с текстом
+        Button(self.root, width=25, height=25, image=self.logo_question, command=self.info).grid(row=3, column=1,
+                                                                                               sticky=W, padx=5)
+        Checkbutton(self.root, text="Блок фильтра", bg = bgColor, justify=LEFT, font=deFont,
+                    variable=self.filterbox).grid(row=4, column=0, sticky=W)          # строка чекбокса
+        self.entryfilter.grid(row=4, column=1, columnspan=3, sticky=W+E, padx=5, pady=8)  # рисуем спинбокс
+        Checkbutton(self.root, text="Блок вентилятора ВОСК", font=deFont, justify=LEFT, bg = bgColor,
+                                                        variable=self.ventbox).grid(row=5, column=0, sticky=W)   #строка чекбокса
+        self.vosk.grid(row=5, column=1, sticky=W, padx=5, pady=8)
         self.vosk.current(0)
-        self.air.grid(row=4, column=2, sticky=W, padx=5, pady=5)           # выпадающая менюшка аиров
+        self.air.grid(row=5, column=2, sticky=W, padx=5, pady=8)           # выпадающая менюшка аиров
         self.air.current(0)  # устанавливаем дефолтную позицию выпадающего меню
-        self.entryvent.grid(row=4, column=3, sticky=W, padx=5, pady=5)
-        Checkbutton(self.root, text="Блок вентилятора ВОСК 2", justify=LEFT, font=("", 9, "bold"), variable=self.vent2box).grid(row=5,
-                                                                                                          column=0, sticky=W)  # строка чекбокса
-        self.vosk2.grid(row=5, column=1, sticky=W, padx=5, pady=5)
+        self.entryvent.grid(row=5, column=3, sticky=W, padx=5, pady=8)
+        Checkbutton(self.root, text="Блок вентилятора ВОСК 2", justify=LEFT, bg = bgColor, font=deFont, \
+                                                                                    variable=self.vent2box).grid(
+                                                                    row=6, column=0, sticky=W)  # строка чекбокса
+        self.vosk2.grid(row=6, column=1, sticky=W, padx=5, pady=8)
         self.vosk2.current(0)
-        self.air2.grid(row=5, column=2, sticky=W, padx=5, pady=5)  # выпадающая менюшка аиров
+        self.air2.grid(row=6, column=2, sticky=W, padx=5, pady=8)  # выпадающая менюшка аиров
         self.air2.current(0)  # устанавливаем дефолтную позицию выпадающего меню
-        self.entryvent2.grid(row=5, column=3, sticky=W, padx=5, pady=5)
-        Checkbutton(self.root, text="Блок ВНВ 5012", justify=LEFT, font=("", 9, "bold"), variable=self.vnv5012box).grid(row=6, column=0,
-                                                                                                  sticky=W)        # строка чекбокса
-        self.vnv5012_widht.grid(row=6, column=1, sticky=W, padx=5, pady=5)  # выпадающая менюшка внв
+        self.entryvent2.grid(row=6, column=3, sticky=W, padx=5, pady=8)
+        Checkbutton(self.root, text="Блок ВНВ 5012", justify=LEFT, bg = bgColor, font=deFont,
+                    variable=self.vnv5012box).grid(row=7, column=0, sticky=W)        # строка чекбокса
+        self.vnv5012_widht.grid(row=7, column=1, sticky=W, padx=5, pady=8)  # выпадающая менюшка внв
         self.vnv5012_widht.current(0)  # устанавливаем дефолтную позицию выпадающего меню
-        self.entryvnv5012.grid(row=6, column=2, columnspan=3, sticky=W+E, padx=5, pady=5)
+        self.entryvnv5012.grid(row=7, column=2, columnspan=3, sticky=W+E, padx=5, pady=8)
         # Checkbutton(self.root, text="Блок ВНВ 4816", justify=LEFT, variable=self.vnv4816box).grid(row=6, column=0, sticky=W)      # строка чекбокса
         # self.vnv4816_widht.grid(row=6, column=1, sticky=W)  # выпадающая менюшка внв
         # self.vnv4816_widht.current(0)  # устанавливаем дефолтную позицию выпадающего меню
         # self.entryvnv4816.grid(row=6, column=2, columnspan=2, sticky=W)
-        Checkbutton(self.root, text="Блок ВОВ 5012", justify=LEFT, font=("", 9, "bold"), variable=self.vov5012box).grid(row=7, column=0,
-                                                                                                  sticky=W)     # строка чекбокса
-        self.vov5012_widht.grid(row=7, column=1, sticky=W, padx=5, pady=5)  # выпадающая менюшка внв
+        Checkbutton(self.root, text="Блок ВОВ 5012", justify=LEFT, bg = bgColor, font=deFont,
+                    variable=self.vov5012box).grid(row=8, column=0, sticky=W)     # строка чекбокса
+        self.vov5012_widht.grid(row=8, column=1, sticky=W, padx=5, pady=8)  # выпадающая менюшка внв
         self.vov5012_widht.current(0)  # устанавливаем дефолтную позицию выпадающего меню
-        self.entryvov5012.grid(row=7, column=2, columnspan=3, sticky=W+E, padx=5, pady=5)
+        self.entryvov5012.grid(row=8, column=2, columnspan=3, sticky=W+E, padx=5, pady=8)
         # Checkbutton(self.root, text="Блок ВОВ 4816", justify=LEFT, variable=self.vov4816box).grid(row=8, column=0, sticky=W)       # строка чекбокса
         # self.vov4816_widht.grid(row=8, column=1, sticky=W)  # выпадающая менюшка внв
         # self.vov4816_widht.current(0)  # устанавливаем дефолтную позицию выпадающего меню
         # self.entryvov4816.grid(row=8, column=2, columnspan=2, sticky=W)
-        Checkbutton(self.root, text="Блок ЭКО", justify=LEFT, font=("", 9, "bold"), variable=self.ekobox).grid(row=9, column=0,
-                                                                                          sticky=W)  # строка чекбокса
-        self.entryeko.grid(row=9, column=1, columnspan=3, sticky=W+E, padx=5, pady=5)
-        Checkbutton(self.root, text="Блок вертикального клапана", justify=LEFT, font=("", 9, "bold"), variable=self.vertklapbox).grid(
-            row=10, column=0, sticky=W)  # строка чекбокса
-        self.entryvertklap.grid(row=10, column=1, columnspan=3, sticky=W+E, padx=5, pady=5)
-        Checkbutton(self.root, text="Блок пластинчатого утилизатора", justify=LEFT, font=("", 9, "bold"), variable=self.ppbox).grid(
-            row=11, column=0, sticky=W)  # строка чекбокса
-        self.entrypp.grid(row=11, column=1, columnspan=3, sticky=W+E, padx=5, pady=5)
-        Checkbutton(self.root, text="Блок камеры промежуточной",justify=LEFT, font=("", 9, "bold"),
-                    variable=self.promkambox).grid(row=12,
-                                                                                                            column=0, sticky=W)  # строка чекбокса
-        self.entrypromkam.grid(row=12, column=1, columnspan=3, sticky=W+E, padx=5, pady=5) # рисуем спинбокс
+        Checkbutton(self.root, text="Блок ЭКО", justify=LEFT, bg = bgColor, font=deFont, variable=self.ekobox).grid(
+            row=9, column=0, sticky=W)  # строка чекбокса
+        self.entryeko.grid(row=9, column=1, columnspan=3, sticky=W+E, padx=5, pady=8)
+        Checkbutton(self.root, text="Блок вертикального клапана", justify=LEFT, bg = bgColor, font=deFont,
+                    variable=self.vertklapbox).grid(row=10, column=0, sticky=W)  # строка чекбокса
+        self.entryvertklap.grid(row=10, column=1, columnspan=3, sticky=W+E, padx=5, pady=8)
+        Checkbutton(self.root, text="Блок пластинчатого утилизатора", justify=LEFT, bg = bgColor, font=deFont,
+                    variable=self.ppbox).grid(row=11, column=0, sticky=W)  # строка чекбокса
+        self.entrypp.grid(row=11, column=1, columnspan=3, sticky=W+E, padx=5, pady=8)
+        Checkbutton(self.root, text="Блок камеры промежуточной",justify=LEFT, bg = bgColor, font=deFont,
+                    variable=self.promkambox).grid(row=12, column=0, sticky=W)  # строка чекбокса
+        self.entrypromkam.grid(row=12, column=1, columnspan=3, sticky=W+E, padx=5, pady=8) # рисуем спинбокс
+        # Кнопки выгрузки и закрытия
+        Button(self.root, width=230, height=40, image=self.logo_upload, pady=20, command=self.action).grid(row=13,
+                                                                                      column=0, sticky=S)  # Кнопка выгрузки
+        Button(self.root, width=207, height=40, image=self.logo_close, padx=10, pady=20,
+               command=self.root.destroy).grid(row=13, column=1, columnspan=3, sticky=W)  # Кнопка закрытия
+        Label(self.root, bg = bgColor, text="v0.0.6 alfa", justify=LEFT).grid(row=14, column=3, sticky=E)
 
-        Button(self.root, width=6, height=2, text="Выгрузить", font=("Ghost type A", 9, "bold"),
-               command=self.action).grid(row=13, column=0, sticky=W+E)                        # Кнопка выгрузки
-        Button(self.root, width=6, height=2, text="Закрыть", command=self.root.destroy).grid(row=13, column=1,
-                                                                                             columnspan=3,
-                                                                                             sticky=W+E)  # Кнопка закрытия
-        Label(self.root, text="v0.0.5 alfa", justify=LEFT).grid(row=14, column=3, sticky=E)
-
-
-    #Конопка INFO
+    # Конопка INFO
     def info(self, title="INFO", resizable=(False, False), icon=r"resourses/info.ico"):
-        draw = Tk()
+        draw = tkinter.Toplevel()
         draw.title(title)
         draw.resizable(resizable[0], resizable[1])
+        draw.configure(bg='#dbdbdb')
         if icon:
             draw.iconbitmap(icon)
 
         Label(draw, text="- Для блоков ВОСК выбираем типоразмер ВОСК, типоразмер двигателя и "
                                              "количество.\n- Для блока ВНВ и ВОВ "
                                              "выбираем ширину ТО и количество.\n- Для всего остального на выбор только "
-                                             "количество.", justify=LEFT, padx=15, pady=15, font=("", 10, "bold")).grid(
-                                                                                              row=0, column=0, sticky=W)
+                                             "количество.", justify=LEFT, padx=15, pady=15, bg='#dbdbdb', font=("", 10,
+                                                                              "bold")).grid(row=0, column=0, sticky=W)
         Button(draw, width=10, height=2, text="Ок", command=draw.destroy).grid(row=1, column=0)
-    #вывод данных в excel
+
+    # Вывод данных в excel
     def action(self):
+        wb = Workbook()
+        ws = wb.active
+        ws.title = 'Перечень'
         global sheet_form
         vrs_num = self.vrs_num.get()
         vrs_perf = self.vrs_perf.get()
@@ -169,13 +200,13 @@ class VRS:
         ws.column_dimensions['B'].width = 35
         ws.column_dimensions['C'].width = 7
         ws.column_dimensions['D'].width = 12
+
         if self.filterbox.get():
             filteramount = int(self.entryfilter.get())
             ws.append(['Блок фильтра', '', filteramount])
 
             cells = fb_table(vrs_num, vrs_perf)
             for sign, name, amount, material in cells:
-                #print(sign.value, name.value, amount.value, material.value) # выводим нужные строки
                 ws.append([sign.value, name.value, int(amount.value*filteramount), material.value])
 
         if self.ventbox.get():
@@ -186,10 +217,8 @@ class VRS:
             vent = vent_table(vrs_num, vrs_perf, vosk)
             air = air_table(vrs_perf, air)
             for sign, name, amount, material in vent:
-                #print(sign.value, name.value, amount.value, material.value) #проверяем в консоли на вывод нужных строк
                 ws.append([sign.value, name.value, int(amount.value * ventamount), material.value])
             for sign, name, amount, material in air:
-                #print(sign.value, name.value, amount.value, material.value) #проверяем в консоли на вывод нужных строк
                 ws.append([sign.value, name.value, int(amount.value * ventamount), material.value])
 
         if self.vent2box.get():
@@ -200,12 +229,9 @@ class VRS:
             vent2 = vent2_table(vrs_num, vrs_perf, vosk2)
             air2 = air2_table(vrs_perf, air2)
             for sign, name, amount, material in vent2:
-                #print(sign.value, name.value, amount.value, material.value) #проверяем в консоли на вывод нужных строк
                 ws.append([sign.value, name.value, int(amount.value * ventamount), material.value])
             for sign, name, amount, material in air2:
-                #print(sign.value, name.value, amount.value, material.value) #проверяем в консоли на вывод нужных строк
                 ws.append([sign.value, name.value, int(amount.value * ventamount), material.value])
-
 
         if self.filterbox.get() == 0 and self.ventbox.get() == 0 and self.vent2box.get() == 0 and \
                 self.vnv5012box.get()  == 0 and self.vov5012box.get() == 0 and self.ekobox.get() == 0 and \
@@ -219,5 +245,5 @@ class VRS:
             messagebox.showinfo("VRS", 'Перечень VRS-500-' + vrs_num + '-' + vrs_perf + '\nвыгружен в корень папки')
 
 if __name__ == "__main__":
-    program = VRS(460, 200, "Перечень деталей")
+    program = VRS("Перечень деталей")
     program.run()
