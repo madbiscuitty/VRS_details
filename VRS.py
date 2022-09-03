@@ -6,9 +6,6 @@ from tkinter import ttk
 from tkinter.ttk import Combobox
 from PIL import Image, ImageTk
 from table_var import *
-
-# Открываем excel документ
-
 class VRS:
     def __init__(self, title="", resizable=(False, False), icon=r"resourses/icon.ico"):
         self.root = Tk()
@@ -90,16 +87,16 @@ class VRS:
         self.logo_label_question.image = self.logo_question
         self.logo_label.image = self.logo
 
-        self.logo_label.grid(row=0, column=0, columnspan=4)
+        #self.logo_label.grid(row=0, column=0, columnspan=4)
         Label(self.root, text="Выберите типоразмер VRS:", justify=LEFT, bg = bgColor, font=deFont).grid(
                                                                         row=1, column=0, sticky=W)
         self.vrs_num.grid(row=1, column=1, columnspan=3, sticky=W + E, padx=5, pady=8)
-        self.vrs_num.current(0)                                                                                                     # устанавливаем дефолтную позицию выпадающего меню
+        self.vrs_num.current(0)   # устанавливаем дефолтную позицию выпадающего меню
         Label(self.root, text="Выберите исполнение VRS:", justify=LEFT, bg = bgColor, font=deFont).grid(row=2,
                                                                                                          column=0,
                                                                                                      sticky=W)
         self.vrs_perf.grid(row=2, column=1, columnspan=3, sticky=W + E, padx=5, pady=8)       # вывод выпадающего меню
-        self.vrs_perf.current(0)                                                                                                    # устанавливаем дефолтную позицию выпадающего меню
+        self.vrs_perf.current(0)  # устанавливаем дефолтную позицию выпадающего меню
         Label(self.root, text="Выберите параметры блоков:", justify=LEFT, bg = bgColor, font=("Roboto", 12,
                                                                         "bold")).grid(row=3, column=0, sticky=W) # вывод строки с текстом
         Button(self.root, width=25, height=25, image=self.logo_question, command=self.info).grid(row=3, column=1,
@@ -149,15 +146,15 @@ class VRS:
         Checkbutton(self.root, text="Блок пластинчатого утилизатора", justify=LEFT, bg = bgColor, font=deFont,
                     variable=self.ppbox).grid(row=11, column=0, sticky=W)  # строка чекбокса
         self.entrypp.grid(row=11, column=1, columnspan=3, sticky=W+E, padx=5, pady=8)
-        Checkbutton(self.root, text="Блок камеры промежуточной",justify=LEFT, bg = bgColor, font=deFont,
-                    variable=self.promkambox).grid(row=12, column=0, sticky=W)  # строка чекбокса
+        Checkbutton(self.root, text="Блок камеры промежуточной,\nповорот верх(вниз)",justify=LEFT, bg = bgColor,
+                    font=deFont, variable=self.promkambox).grid(row=12, column=0, sticky=W)  # строка чекбокса
         self.entrypromkam.grid(row=12, column=1, columnspan=3, sticky=W+E, padx=5, pady=8) # рисуем спинбокс
         # Кнопки выгрузки и закрытия
         Button(self.root, width=230, height=40, image=self.logo_upload, pady=20, command=self.action).grid(row=13,
                                                                                       column=0, sticky=S)  # Кнопка выгрузки
         Button(self.root, width=207, height=40, image=self.logo_close, padx=10, pady=20,
                command=self.root.destroy).grid(row=13, column=1, columnspan=3, sticky=W)  # Кнопка закрытия
-        Label(self.root, bg = bgColor, text="v0.0.6 alfa", justify=LEFT).grid(row=14, column=3, sticky=E)
+        Label(self.root, bg = bgColor, text="v0.1.0 alfa", justify=LEFT).grid(row=14, column=3, sticky=E)
 
     # Конопка INFO
     def info(self, title="INFO", resizable=(False, False), icon=r"resourses/info.ico"):
@@ -177,70 +174,117 @@ class VRS:
 
     # Вывод данных в excel
     def action(self):
+        # Открываем excel документ
         wb = Workbook()
         ws = wb.active
         ws.title = 'Перечень'
         global sheet_form
+        # Присваиваем переменным значения из полей ввода
         vrs_num = self.vrs_num.get()
         vrs_perf = self.vrs_perf.get()
         vosk = self.vosk.get()
         vosk2 = self.vosk2.get()
         air = self.air.get()
         air2 = self.air2.get()
-        vnv = self.vnv5012_widht.get()
-        vov = self.vov5012_widht.get()
-        #форматирование заголовка в выводимой таблице
+        vnv5012 = self.vnv5012_widht.get()
+        vov5012 = self.vov5012_widht.get()
+        #формирование заголовка в выводимой таблице
         ws.cell(row=1, column=1).value = 'Перечень VRS-500-' + vrs_num + '-' + vrs_perf
         ws.cell(row=2, column=1).value = 'Обозначение'
         ws.cell(row=2, column=2).value = 'Наименование'
         ws.cell(row=2, column=3).value = 'Кол-во'
         ws.cell(row=2, column=4).value = 'Материал'
         ws.merge_cells('A1:D1')
-        ws.column_dimensions['A'].width = 25
-        ws.column_dimensions['B'].width = 35
-        ws.column_dimensions['C'].width = 7
-        ws.column_dimensions['D'].width = 12
-
+        ws.column_dimensions['A'].width = 40
+        ws.column_dimensions['B'].width = 40
+        ws.column_dimensions['C'].width = 8
+        ws.column_dimensions['D'].width = 14
+        # Фильтр
         if self.filterbox.get():
             filteramount = int(self.entryfilter.get())
             ws.append(['Блок фильтра', '', filteramount])
 
-            cells = fb_table(vrs_num, vrs_perf)
-            for sign, name, amount, material in cells:
+            cell = filter_table(vrs_num, vrs_perf)
+            for sign, name, amount, material in cell:
                 ws.append([sign.value, name.value, int(amount.value*filteramount), material.value])
-
+        # ВОСК
         if self.ventbox.get():
             ventamount = int(self.entryvent.get())
             ws.append(['Блок вентилятора ВОСК ' + self.vosk.get() + ' ' + self.air.get(), '', ventamount])
             #ws.append(['Разблюдовка:'])
 
             vent = vent_table(vrs_num, vrs_perf, vosk)
-            air = air_table(vrs_perf, air)
+            aircell = air_table(vrs_perf, air, vosk)
             for sign, name, amount, material in vent:
                 ws.append([sign.value, name.value, int(amount.value * ventamount), material.value])
-            for sign, name, amount, material in air:
+            for sign, name, amount, material in aircell:
                 ws.append([sign.value, name.value, int(amount.value * ventamount), material.value])
-
+        # ВОСК2
         if self.vent2box.get():
             ventamount = int(self.entryvent2.get())
             ws.append(['Блок вентилятора ВОСК ' + self.vosk2.get() + ' ' + self.air2.get(), '', ventamount])
             #ws.append(['Разблюдовка:'])
 
-            vent2 = vent2_table(vrs_num, vrs_perf, vosk2)
-            air2 = air2_table(vrs_perf, air2)
+            vent2 = vent_table2(vrs_num, vrs_perf, vosk2)
+            aircell2 = air_table2(vrs_perf, air2, vosk2)
             for sign, name, amount, material in vent2:
                 ws.append([sign.value, name.value, int(amount.value * ventamount), material.value])
-            for sign, name, amount, material in air2:
+            for sign, name, amount, material in aircell2:
                 ws.append([sign.value, name.value, int(amount.value * ventamount), material.value])
+        # ВНВ
+        if self.vnv5012box.get():
+            vnv5012amount = int(self.entryvnv5012.get())
+            ws.append(['Блок ВНВ 5012', '', vnv5012amount])
+
+            vnvcell = vnv5012_table(vrs_num, vrs_perf, vnv5012)
+            for sign, name, amount, material in vnvcell:
+                ws.append([sign.value, name.value, int(amount.value*vnv5012amount), material.value])
+        # ВОВ
+        if self.vov5012box.get():
+            vov5012amount = int(self.entryvov5012.get())
+            ws.append(['Блок ВОВ 5012', '', vov5012amount])
+
+            vovcell = vov5012_table(vrs_num, vrs_perf, vov5012)
+            for sign, name, amount, material in vovcell:
+                ws.append([sign.value, name.value, int(amount.value * vov5012amount), material.value])
+        # ЭКО
+        if self.ekobox.get():
+            ekoamount = int(self.entryeko.get())
+            ws.append(['Блок ЭКО', '', ekoamount])
+
+            ekocell = filter_table(vrs_num, vrs_perf)
+            for sign, name, amount, material in ekocell:
+                ws.append([sign.value, name.value, int(amount.value * ekoamount), material.value])
+        # Вертикальный клапан
+        if self.vertklapbox.get():
+            vertklapamount = int(self.entryvertklap.get())
+            ws.append(['Блок вертикального клапана', '', vertklapamount])
+
+            vertklapcell = vertklap_table(vrs_num, vrs_perf)
+            for sign, name, amount, material in vertklapcell:
+                ws.append([sign.value, name.value, int(amount.value * vertklapamount), material.value])
+        # Пластинчатый утилизатор
+        if self.ppbox.get():
+             ppamount = int(self.entrypp.get())
+             ws.append(['Блок пластинчатого утилизатора', '', ppamount])
+
+             ppcell = pp_table(vrs_num, vrs_perf)
+             for sign, name, amount, material in ppcell:
+                ws.append([sign.value, name.value, int(amount.value * ppamount), material.value])
+        # Камера промежуточная
+        if self.promkambox.get():
+             promkamamount = int(self.entrypromkam.get())
+             ws.append(['Блок камеры промежуточной', '', promkamamount])
+
+             promkamcell = promkam_table(vrs_num, vrs_perf)
+             for sign, name, amount, material in promkamcell:
+                 ws.append([sign.value, name.value, int(amount.value * promkamamount), material.value])
 
         if self.filterbox.get() == 0 and self.ventbox.get() == 0 and self.vent2box.get() == 0 and \
                 self.vnv5012box.get()  == 0 and self.vov5012box.get() == 0 and self.ekobox.get() == 0 and \
                 self.vertklapbox.get() == 0 and self.ppbox.get() == 0 and self.promkambox.get() == 0:
             messagebox.showerror("VRS", "Выберите хотя бы 1 блок")
-
-        if self.filterbox.get() == 1 or self.ventbox.get() == 1 or self.vent2box.get() == 1 or  self.vnv5012box.get()\
-                == 1 or self.vov5012box.get() == 1 or self.ekobox.get() == 1 or self.vertklapbox.get() == 1 or  \
-                self.ppbox.get() == 1 or self.promkambox.get() == 1:
+        else:
             wb.save('Перечень VRS-500-' + vrs_num + '-' + vrs_perf + '.xlsx')
             messagebox.showinfo("VRS", 'Перечень VRS-500-' + vrs_num + '-' + vrs_perf + '\nвыгружен в корень папки')
 
