@@ -4,8 +4,10 @@ from openpyxl import *
 from tkinter import *
 from tkinter import ttk
 from tkinter.ttk import Combobox
+from tkinter.ttk import Progressbar
 from PIL import Image, ImageTk
 from table_var import *
+from time import sleep
 class VRS:
     def __init__(self, title="", resizable=(False, False), icon=r"resourses/icon.ico"):
         self.root = Tk()
@@ -56,6 +58,7 @@ class VRS:
         self.entryvertklap = Spinbox(self.root, values=(count), bd=2)
         self.entrypp = Spinbox(self.root, values=(count), bd=2)
         self.entrypromkam = Spinbox(self.root, values=(count), bd=2)
+        self.pb = Progressbar(self.root, orient=HORIZONTAL, mode="determinate", length=400)
 
     # Запуск окна программы
     def run(self):
@@ -72,8 +75,8 @@ class VRS:
         self.logo = Image.open('resourses/logo.png')
         self.logo_upload = self.logo_upload.resize((242, 42), Image.Resampling.LANCZOS)
         self.logo_close = self.logo_close.resize((230, 42), Image.Resampling.LANCZOS)
-        self.logo_question = self.logo_question.resize((25, 25), Image.Resampling.LANCZOS)
-        self.logo = self.logo.resize((461, 54), Image.Resampling.LANCZOS)
+        self.logo_question = self.logo_question.resize((27, 27), Image.Resampling.LANCZOS)
+        self.logo = self.logo.resize((120, 54), Image.Resampling.LANCZOS)
         self.logo_upload = ImageTk.PhotoImage(self.logo_upload)
         self.logo_close = ImageTk.PhotoImage(self.logo_close)
         self.logo_question = ImageTk.PhotoImage(self.logo_question)
@@ -87,20 +90,20 @@ class VRS:
         self.logo_label_question.image = self.logo_question
         self.logo_label.image = self.logo
 
-        #self.logo_label.grid(row=0, column=0, columnspan=4)
+        self.logo_label.grid(row=1, column=2, columnspan=2, rowspan=2)
         Label(self.root, text="Выберите типоразмер VRS:", justify=LEFT, bg = bgColor, font=deFont).grid(
                                                                         row=1, column=0, sticky=W)
-        self.vrs_num.grid(row=1, column=1, columnspan=3, sticky=W + E, padx=5, pady=8)
+        self.vrs_num.grid(row=1, column=1, sticky=W + E, padx=5, pady=8)
         self.vrs_num.current(0)   # устанавливаем дефолтную позицию выпадающего меню
         Label(self.root, text="Выберите исполнение VRS:", justify=LEFT, bg = bgColor, font=deFont).grid(row=2,
                                                                                                          column=0,
                                                                                                      sticky=W)
-        self.vrs_perf.grid(row=2, column=1, columnspan=3, sticky=W + E, padx=5, pady=8)       # вывод выпадающего меню
+        self.vrs_perf.grid(row=2, column=1, sticky=W + E, padx=5, pady=8)       # вывод выпадающего меню
         self.vrs_perf.current(0)  # устанавливаем дефолтную позицию выпадающего меню
         Label(self.root, text="Выберите параметры блоков:", justify=LEFT, bg = bgColor, font=("Roboto", 12,
                                                                         "bold")).grid(row=3, column=0, sticky=W) # вывод строки с текстом
-        Button(self.root, width=25, height=25, image=self.logo_question, command=self.info).grid(row=3, column=1,
-                                                                                               sticky=W, padx=5)
+        Button(self.root, width=25, height=25, bg = bgColor, image=self.logo_question, border=0,
+               command=self.info).grid(row=3, column=1, sticky=W, padx=5)
         Checkbutton(self.root, text="Блок фильтра", bg = bgColor, justify=LEFT, font=deFont,
                     variable=self.filterbox).grid(row=4, column=0, sticky=W)          # строка чекбокса
         self.entryfilter.grid(row=4, column=1, columnspan=3, sticky=W+E, padx=5, pady=8)  # рисуем спинбокс
@@ -121,6 +124,8 @@ class VRS:
         self.entryvent2.grid(row=6, column=3, sticky=W, padx=5, pady=8)
         Checkbutton(self.root, text="Блок ВНВ 5012", justify=LEFT, bg = bgColor, font=deFont,
                     variable=self.vnv5012box).grid(row=7, column=0, sticky=W)        # строка чекбокса
+        Button(self.root, width=25, height=25, bg = bgColor, image=self.logo_question, border=0,
+               command=self.vnvinfo).grid(row=7, column=0, sticky=E, padx=5)
         self.vnv5012_widht.grid(row=7, column=1, sticky=W, padx=5, pady=8)  # выпадающая менюшка внв
         self.vnv5012_widht.current(0)  # устанавливаем дефолтную позицию выпадающего меню
         self.entryvnv5012.grid(row=7, column=2, columnspan=3, sticky=W+E, padx=5, pady=8)
@@ -130,6 +135,8 @@ class VRS:
         # self.entryvnv4816.grid(row=6, column=2, columnspan=2, sticky=W)
         Checkbutton(self.root, text="Блок ВОВ 5012", justify=LEFT, bg = bgColor, font=deFont,
                     variable=self.vov5012box).grid(row=8, column=0, sticky=W)     # строка чекбокса
+        Button(self.root, width=25, height=25, bg = bgColor, image=self.logo_question, border=0, command=self.vovinfo \
+                                                    ).grid(row=8, column=0, sticky=E, padx=5)
         self.vov5012_widht.grid(row=8, column=1, sticky=W, padx=5, pady=8)  # выпадающая менюшка внв
         self.vov5012_widht.current(0)  # устанавливаем дефолтную позицию выпадающего меню
         self.entryvov5012.grid(row=8, column=2, columnspan=3, sticky=W+E, padx=5, pady=8)
@@ -146,7 +153,7 @@ class VRS:
         Checkbutton(self.root, text="Блок пластинчатого утилизатора", justify=LEFT, bg = bgColor, font=deFont,
                     variable=self.ppbox).grid(row=11, column=0, sticky=W)  # строка чекбокса
         self.entrypp.grid(row=11, column=1, columnspan=3, sticky=W+E, padx=5, pady=8)
-        Checkbutton(self.root, text="Блок камеры промежуточной,\nповорот верх(вниз)",justify=LEFT, bg = bgColor,
+        Checkbutton(self.root, text="Блок камеры промежуточной,\nповорот вверх(вниз)",justify=LEFT, bg = bgColor,
                     font=deFont, variable=self.promkambox).grid(row=12, column=0, sticky=W)  # строка чекбокса
         self.entrypromkam.grid(row=12, column=1, columnspan=3, sticky=W+E, padx=5, pady=8) # рисуем спинбокс
         # Кнопки выгрузки и закрытия
@@ -154,8 +161,8 @@ class VRS:
                                                                                       column=0, sticky=S)  # Кнопка выгрузки
         Button(self.root, width=207, height=40, image=self.logo_close, padx=10, pady=20,
                command=self.root.destroy).grid(row=13, column=1, columnspan=3, sticky=W)  # Кнопка закрытия
-        Label(self.root, bg = bgColor, text="v0.1.0 alfa", justify=LEFT).grid(row=14, column=3, sticky=E)
-
+        self.pb.grid(row=14, columnspan=3)
+        Label(self.root, bg = bgColor, text="v0.1.1b", justify=LEFT).grid(row=14, column=3, sticky=E)
     # Конопка INFO
     def info(self, title="INFO", resizable=(False, False), icon=r"resourses/info.ico"):
         draw = tkinter.Toplevel()
@@ -170,7 +177,32 @@ class VRS:
                                              "выбираем ширину ТО и количество.\n- Для всего остального на выбор только "
                                              "количество.", justify=LEFT, padx=15, pady=15, bg='#dbdbdb', font=("", 10,
                                                                               "bold")).grid(row=0, column=0, sticky=W)
-        Button(draw, width=10, height=2, text="Ок", command=draw.destroy).grid(row=1, column=0)
+        Button(draw, width=10, height=2, text="Ок", font=("", 10), command=draw.destroy).grid(row=1, column=0)
+    # Кнопка INFO для ВНВ
+    def vnvinfo(self, title="INFO", resizable=(False, False), icon=r"resourses/info.ico"):
+        draw = tkinter.Toplevel()
+        draw.title(title)
+        draw.resizable(resizable[0], resizable[1])
+        draw.configure(bg='#dbdbdb')
+        if icon:
+            draw.iconbitmap(icon)
+
+        Label(draw, text="160 мм если диаметр коллектора <76 мм\n180 мм если диаметр коллектора =76 мм",
+              justify=LEFT, padx=15, pady=15, bg='#dbdbdb', font=("", 10, "bold")).grid(row=0, column=0, sticky=W)
+        Button(draw, width=8, height=2, text="Ок", font=("", 10), command=draw.destroy).grid(row=1, column=0)
+    # Кнопка INFO для ВОВ
+    def vovinfo(self, title="INFO", resizable=(False, False), icon=r"resourses/info.ico"):
+        draw = tkinter.Toplevel()
+        draw.title(title)
+        draw.resizable(resizable[0], resizable[1])
+        draw.configure(bg='#dbdbdb')
+        if icon:
+            draw.iconbitmap(icon)
+
+        Label(draw, text="Для теплообменников с рядностью:\n1-6 рядов - 180 мм\n7-8 рядов - 220 мм\n9-10 рядов - 260 "
+                         "мм\n11-12 рядов - 310 мм",
+              justify=LEFT, padx=15, pady=15, bg='#dbdbdb', font=("", 10, "bold")).grid(row=0, column=0, sticky=W)
+        Button(draw, width=8, height=2, text="Ок", font=("", 10), command=draw.destroy).grid(row=1, column=0)
 
     # Вывод данных в excel
     def action(self):
@@ -207,6 +239,8 @@ class VRS:
             cell = filter_table(vrs_num, vrs_perf)
             for sign, name, amount, material in cell:
                 ws.append([sign.value, name.value, int(amount.value*filteramount), material.value])
+        self.pb['value'] = 10
+        self.pb.update()
         # ВОСК
         if self.ventbox.get():
             ventamount = int(self.entryvent.get())
@@ -219,6 +253,8 @@ class VRS:
                 ws.append([sign.value, name.value, int(amount.value * ventamount), material.value])
             for sign, name, amount, material in aircell:
                 ws.append([sign.value, name.value, int(amount.value * ventamount), material.value])
+        self.pb['value'] = 20
+        self.pb.update()
         # ВОСК2
         if self.vent2box.get():
             ventamount = int(self.entryvent2.get())
@@ -231,6 +267,8 @@ class VRS:
                 ws.append([sign.value, name.value, int(amount.value * ventamount), material.value])
             for sign, name, amount, material in aircell2:
                 ws.append([sign.value, name.value, int(amount.value * ventamount), material.value])
+        self.pb['value'] = 30
+        self.pb.update()
         # ВНВ
         if self.vnv5012box.get():
             vnv5012amount = int(self.entryvnv5012.get())
@@ -239,6 +277,8 @@ class VRS:
             vnvcell = vnv5012_table(vrs_num, vrs_perf, vnv5012)
             for sign, name, amount, material in vnvcell:
                 ws.append([sign.value, name.value, int(amount.value*vnv5012amount), material.value])
+        self.pb['value'] = 40
+        self.pb.update()
         # ВОВ
         if self.vov5012box.get():
             vov5012amount = int(self.entryvov5012.get())
@@ -247,6 +287,8 @@ class VRS:
             vovcell = vov5012_table(vrs_num, vrs_perf, vov5012)
             for sign, name, amount, material in vovcell:
                 ws.append([sign.value, name.value, int(amount.value * vov5012amount), material.value])
+        self.pb['value'] = 50
+        self.pb.update()
         # ЭКО
         if self.ekobox.get():
             ekoamount = int(self.entryeko.get())
@@ -255,6 +297,8 @@ class VRS:
             ekocell = filter_table(vrs_num, vrs_perf)
             for sign, name, amount, material in ekocell:
                 ws.append([sign.value, name.value, int(amount.value * ekoamount), material.value])
+        self.pb['value'] = 60
+        self.pb.update()
         # Вертикальный клапан
         if self.vertklapbox.get():
             vertklapamount = int(self.entryvertklap.get())
@@ -263,6 +307,8 @@ class VRS:
             vertklapcell = vertklap_table(vrs_num, vrs_perf)
             for sign, name, amount, material in vertklapcell:
                 ws.append([sign.value, name.value, int(amount.value * vertklapamount), material.value])
+        self.pb['value'] = 70
+        self.pb.update()
         # Пластинчатый утилизатор
         if self.ppbox.get():
              ppamount = int(self.entrypp.get())
@@ -271,6 +317,8 @@ class VRS:
              ppcell = pp_table(vrs_num, vrs_perf)
              for sign, name, amount, material in ppcell:
                 ws.append([sign.value, name.value, int(amount.value * ppamount), material.value])
+        self.pb['value'] = 85
+        self.pb.update()
         # Камера промежуточная
         if self.promkambox.get():
              promkamamount = int(self.entrypromkam.get())
@@ -279,6 +327,8 @@ class VRS:
              promkamcell = promkam_table(vrs_num, vrs_perf)
              for sign, name, amount, material in promkamcell:
                  ws.append([sign.value, name.value, int(amount.value * promkamamount), material.value])
+        self.pb['value'] = 100
+        self.pb.update()
 
         if self.filterbox.get() == 0 and self.ventbox.get() == 0 and self.vent2box.get() == 0 and \
                 self.vnv5012box.get()  == 0 and self.vov5012box.get() == 0 and self.ekobox.get() == 0 and \
@@ -287,6 +337,7 @@ class VRS:
         else:
             wb.save('Перечень VRS-500-' + vrs_num + '-' + vrs_perf + '.xlsx')
             messagebox.showinfo("VRS", 'Перечень VRS-500-' + vrs_num + '-' + vrs_perf + '\nвыгружен в корень папки')
+
 
 if __name__ == "__main__":
     program = VRS("Перечень деталей")

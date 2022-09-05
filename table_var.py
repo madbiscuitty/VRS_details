@@ -49,7 +49,7 @@ def filter_table(vrs_num, vrs_perf):
                 break
         return cells
     except UnboundLocalError:
-        messagebox.showerror('Error', 'Нет данных в таблице')
+        messagebox.showerror('Error', 'Нет данных в таблице для блока\nфильтров VRS ' + vrs_num)
 
 
 def vent_table(vrs_num, vrs_perf, vosk):
@@ -72,7 +72,7 @@ def vent_table(vrs_num, vrs_perf, vosk):
                 break
         return vent
     except UnboundLocalError:
-        messagebox.showerror('Error', 'Нет данных в таблице')
+        messagebox.showerror('Error', 'Нет данных в таблице для ВНК блока ВОСК ' + vosk)
 
 def vent_table2(vrs_num, vrs_perf, vosk2):
     if vrs_perf == '01':
@@ -94,7 +94,7 @@ def vent_table2(vrs_num, vrs_perf, vosk2):
                 break
         return vent2
     except UnboundLocalError:
-        messagebox.showerror('Error', 'Нет данных в таблице')
+        messagebox.showerror('Error', 'Нет данных в таблице для ВНК блока ВОСК ' + vosk2)
 
 def air_table(vrs_perf, air, vosk):
     if vrs_perf == '01':
@@ -116,7 +116,7 @@ def air_table(vrs_perf, air, vosk):
                var_air = air_list[key]
         return var_air
     except UnboundLocalError:
-        messagebox.showerror('Error', 'Нет данных в таблице')
+        messagebox.showerror('Error', 'Нет данных в таблице для вентагрегата ВОСК ' + vosk + ' ' + air)
 
 def air_table2(vrs_perf, air2, vosk2):
     if vrs_perf == '01':
@@ -139,7 +139,7 @@ def air_table2(vrs_perf, air2, vosk2):
                 break
         return var_air2
     except UnboundLocalError:
-        messagebox.showerror('Error', 'Нет данных в таблице')
+        messagebox.showerror('Error', 'Нет данных в таблице для вентагрегата ВОСК ' + vosk2 + ' ' + air)
 
 def vnv5012_table(vrs_num, vrs_perf, vnv5012):
     if vrs_perf == '01':
@@ -185,7 +185,7 @@ def vnv5012_table(vrs_num, vrs_perf, vnv5012):
                 var_vnv5012 = vnv5012_list[key]
         return var_vnv5012
     except UnboundLocalError:
-        messagebox.showerror('Error', 'Нет данных в таблице')
+        messagebox.showerror('Error', 'Нет данных в таблице для\nблока ВНВ 5012 VRS ' + vrs_num)
 
 def vov5012_table(vrs_num, vrs_perf, vov5012):
     if vrs_perf == '01':
@@ -259,7 +259,7 @@ def vov5012_table(vrs_num, vrs_perf, vov5012):
                 var_vov5012 = vov5012_list[key]
         return var_vov5012
     except UnboundLocalError:
-        messagebox.showerror('Error', 'Нет данных в таблице')
+        messagebox.showerror('Error', 'Нет данных в таблице для\nблока ВОВ 5012 VRS ' + vrs_num)
 
 def eko_table(vrs_num, vrs_perf):
     if vrs_perf == '01':
@@ -306,7 +306,7 @@ def eko_table(vrs_num, vrs_perf):
                 break
         return var_eko
     except UnboundLocalError:
-        messagebox.showerror('Error', 'Нет данных в таблице')
+        messagebox.showerror('Error', 'Нет данных в таблице  для\nблока ЭКО VRS ' + vrs_num)
 
 def vertklap_table(vrs_num, vrs_perf):
     if vrs_perf == '01':
@@ -353,7 +353,7 @@ def vertklap_table(vrs_num, vrs_perf):
                 break
         return var_vertklap
     except UnboundLocalError:
-        messagebox.showerror('Error', 'Нет данных в таблице')
+        messagebox.showerror('Error', 'Нет данных в таблице для\nблока ВНВ 5012 VRS ' + vrs_num)
 
 def pp_table(vrs_num, vrs_perf):
     if vrs_perf == '01':
@@ -400,7 +400,7 @@ def pp_table(vrs_num, vrs_perf):
                 break
         return var_pp
     except UnboundLocalError:
-        messagebox.showerror('Error', 'Нет данных в таблице')
+        messagebox.showerror('Error', 'Нет данных в таблице для\nблока клапана вертикального VRS ' + vrs_num)
 
 def promkam_table(vrs_num, vrs_perf):
     if vrs_perf == '01':
@@ -447,4 +447,4 @@ def promkam_table(vrs_num, vrs_perf):
                 break
         return var_promkam
     except UnboundLocalError:
-        messagebox.showerror('Error', 'Нет данных в таблице')
+        messagebox.showerror('Error', 'Нет данных в таблице для\nблока камеры промежуточной VRS ' + vrs_num)
