@@ -50,6 +50,8 @@ def filter_table(vrs_num, vrs_perf):
         return cells
     except UnboundLocalError:
         messagebox.showerror('Error', 'Нет данных в таблице для блока\nфильтров VRS ' + vrs_num)
+        cells = []
+        return cells
 
 
 def vent_table(vrs_num, vrs_perf, vosk):
@@ -61,9 +63,35 @@ def vent_table(vrs_num, vrs_perf, vosk):
         sheet_form = wb_form['Vent-03(04)']  # переходим на вкладку 03 исполнения
 
     vent_list = {
-        '019' + '2.5': sheet_form['A13':'D15'],
-        '019' + '2.8': sheet_form['F13':'I15'],
-        '019' + '3.15': sheet_form['K13':'N15']
+        '019' + '2.5': sheet_form['A4':'D6'],
+        '019' + '2.8': sheet_form['F4':'I6'],
+        '019' + '3.15': sheet_form['K4':'N6'],
+        '034' + '2.5': sheet_form['A10':'D12'],
+        '034' + '2.8': sheet_form['F10':'I12'],
+        '034' + '3.15': sheet_form['K10':'N12'],
+        '039' + '2.8': sheet_form['A16':'D18'],
+        '039' + '3.15': sheet_form['F16':'I18'],
+        '039' + '3.55': sheet_form['K16':'N17'],
+        '039' + '4.0': sheet_form['P16':'S17'],
+        '054' + '3.15': sheet_form['A22':'D24'],
+        '054' + '3.55': sheet_form['F22':'I23'],
+        '054' + '4.0': sheet_form['K22':'N23'],
+        '058' + '3.55': sheet_form['A28':'D29'],
+        '058' + '4.0': sheet_form['F28':'I29'],
+        '058' + '4.5': sheet_form['K28':'N29'],
+        '058' + '5.0': sheet_form['P28':'S29'],
+        '078' + '4.0': sheet_form['A33':'D34'],
+        '078' + '4.5': sheet_form['F33':'I34'],
+        '078' + '5.0': sheet_form['K33':'N34'],
+        '078' + '5.6': sheet_form['P33':'S34'],
+        '086' + '4.0': sheet_form['A38':'D39'],
+        '086' + '4.5': sheet_form['F38':'I39'],
+        '086' + '5.0': sheet_form['K38':'N39'],
+        '086' + '5.6': sheet_form['P38':'S39'],
+        '097' + '4.0': sheet_form['A43':'D44'],
+        '097' + '4.5': sheet_form['F43':'I44'],
+        '097' + '5.0': sheet_form['K43':'N44'],
+        '097' + '5.6': sheet_form['P43':'S44']
     }
     try:
         for key in vent_list.keys():
@@ -73,6 +101,8 @@ def vent_table(vrs_num, vrs_perf, vosk):
         return vent
     except UnboundLocalError:
         messagebox.showerror('Error', 'Нет данных в таблице для ВНК блока ВОСК ' + vosk)
+        vent = []
+        return vent
 
 def vent_table2(vrs_num, vrs_perf, vosk2):
     if vrs_perf == '01':
@@ -83,9 +113,35 @@ def vent_table2(vrs_num, vrs_perf, vosk2):
         sheet_form = wb_form['Vent-03(04)']  # переходим на вкладку 03 исполнения
 
     vent_list = {
-        '019' + '2.5': sheet_form['A13':'D15'],
-        '019' + '2.8': sheet_form['F13':'I15'],
-        '019' + '3.15': sheet_form['K13':'N15']
+        '019' + '2.5': sheet_form['A4':'D6'],
+        '019' + '2.8': sheet_form['F4':'I6'],
+        '019' + '3.15': sheet_form['K4':'N6'],
+        '034' + '2.5': sheet_form['A10':'D12'],
+        '034' + '2.8': sheet_form['F10':'I12'],
+        '034' + '3.15': sheet_form['K10':'N12'],
+        '039' + '2.8': sheet_form['A16':'D18'],
+        '039' + '3.15': sheet_form['F16':'I18'],
+        '039' + '3.55': sheet_form['K16':'N17'],
+        '039' + '4.0': sheet_form['P16':'S17'],
+        '054' + '3.15': sheet_form['A22':'D24'],
+        '054' + '3.55': sheet_form['F22':'I23'],
+        '054' + '4.0': sheet_form['K22':'N23'],
+        '058' + '3.55': sheet_form['A28':'D29'],
+        '058' + '4.0': sheet_form['F28':'I29'],
+        '058' + '4.5': sheet_form['K28':'N29'],
+        '058' + '5.0': sheet_form['P28':'S29'],
+        '078' + '4.0': sheet_form['A33':'D34'],
+        '078' + '4.5': sheet_form['F33':'I34'],
+        '078' + '5.0': sheet_form['K33':'N34'],
+        '078' + '5.6': sheet_form['P33':'S34'],
+        '086' + '4.0': sheet_form['A38':'D39'],
+        '086' + '4.5': sheet_form['F38':'I39'],
+        '086' + '5.0': sheet_form['K38':'N39'],
+        '086' + '5.6': sheet_form['P38':'S39'],
+        '097' + '4.0': sheet_form['A43':'D44'],
+        '097' + '4.5': sheet_form['F43':'I44'],
+        '097' + '5.0': sheet_form['K43':'N44'],
+        '097' + '5.6': sheet_form['P43':'S44']
     }
     try:
         for key in vent_list.keys():
@@ -95,20 +151,69 @@ def vent_table2(vrs_num, vrs_perf, vosk2):
         return vent2
     except UnboundLocalError:
         messagebox.showerror('Error', 'Нет данных в таблице для ВНК блока ВОСК ' + vosk2)
+        vent2 = []
+        return vent2
 
 def air_table(vrs_perf, air, vosk):
     if vrs_perf == '01':
-        sheet_form = wb_form['Vent-01']  # переходим на вкладку 01 исполнения
+        sheet_form = wb_form['Vosk-01']  # переходим на вкладку 01 исполнения
     elif vrs_perf == '02':
-        sheet_form = wb_form['Vent-02']  # переходим на вкладку 02 исполнения
+        sheet_form = wb_form['Vosk-02']  # переходим на вкладку 02 исполнения
     elif vrs_perf == '03' or vrs_perf == '04':
-        sheet_form = wb_form['Vent-03(04)']  # переходим на вкладку 03 исполнения
+        sheet_form = wb_form['Vosk-03(04)']  # переходим на вкладку 03 исполнения
 
     air_list = {
         '2.5' + 'АИР56': sheet_form['A4':'D9'],
         '2.5' + 'АИР63': sheet_form['F4':'I9'],
         '2.5' + 'АИР71': sheet_form['K4':'N9'],
-        '2.5' + 'АИР80': sheet_form['P4':'S9']
+        '2.5' + 'АИР80': sheet_form['P4':'S9'],
+        '2.8' + 'АИР56': sheet_form['A13':'D18'],
+        '2.8' + 'АИР63': sheet_form['F13':'I18'],
+        '2.8' + 'АИР71': sheet_form['K13':'N18'],
+        '2.8' + 'АИР80': sheet_form['P13':'S18'],
+        '2.8' + 'АИР90': sheet_form['U13':'X18'],
+        '3.15' + 'АИР56': sheet_form['A22':'D27'],
+        '3.15' + 'АИР63': sheet_form['F22':'I27'],
+        '3.15' + 'АИР71': sheet_form['K22':'N27'],
+        '3.15' + 'АИР80': sheet_form['P22':'S27'],
+        '3.15' + 'АИР90': sheet_form['U22':'X27'],
+        '3.15' + 'АИР100': sheet_form['Z22':'AC27'],
+        '3.55' + 'АИР56': sheet_form['A31':'D36'],
+        '3.55' + 'АИР63': sheet_form['F31':'I36'],
+        '3.55' + 'АИР71': sheet_form['K31':'N36'],
+        '3.55' + 'АИР80': sheet_form['P31':'S36'],
+        '3.55' + 'АИР90': sheet_form['U31':'X36'],
+        '3.55' + 'АИР100': sheet_form['Z31':'AC36'],
+        '4.0' + 'АИР63': sheet_form['A40':'D46'],
+        '4.0' + 'АИР71': sheet_form['F40':'I46'],
+        '4.0' + 'АИР80': sheet_form['K40':'N46'],
+        '4.0' + 'АИР90': sheet_form['P40':'S46'],
+        '4.0' + 'АИР100': sheet_form['U40':'X46'],
+        '4.0' + 'АИР112': sheet_form['Z40':'AC46'],
+        '4.0' + 'АИР132': sheet_form['AE40':'AH46'],
+        '4.5' + 'АИР71': sheet_form['A50':'D56'],
+        '4.5' + 'АИР80': sheet_form['F50':'I56'],
+        '4.5' + 'АИР90': sheet_form['K50':'N56'],
+        '4.5' + 'АИР100': sheet_form['P50':'S56'],
+        '4.5' + 'АИР112': sheet_form['U50':'X56'],
+        '4.5' + 'АИР132': sheet_form['Z50':'AC56'],
+        '4.5' + 'АИР160': sheet_form['AE50':'AH56'],
+        '5.0' + 'АИР71': sheet_form['A60':'D66'],
+        '5.0' + 'АИР80': sheet_form['F60':'I66'],
+        '5.0' + 'АИР90': sheet_form['K60':'N66'],
+        '5.0' + 'АИР100': sheet_form['P60':'S66'],
+        '5.0' + 'АИР112': sheet_form['U60':'X66'],
+        '5.0' + 'АИР132': sheet_form['Z60':'AC66'],
+        '5.0' + 'АИР160': sheet_form['AE60':'AH66'],
+        '5.0' + 'АИР180': sheet_form['AJ60':'AM66'],
+        '5.6' + 'АИР71': sheet_form['A70':'D76'],
+        '5.6' + 'АИР80': sheet_form['F70':'I76'],
+        '5.6' + 'АИР90': sheet_form['K70':'N76'],
+        '5.6' + 'АИР100': sheet_form['P70':'S76'],
+        '5.6' + 'АИР112': sheet_form['U70':'X76'],
+        '5.6' + 'АИР132': sheet_form['Z70':'AC76'],
+        '5.6' + 'АИР160': sheet_form['AE70':'AH76'],
+        '5.6' + 'АИР180': sheet_form['AJ70':'AM76']
     }
     try:
         for key in air_list.keys():
@@ -117,20 +222,69 @@ def air_table(vrs_perf, air, vosk):
         return var_air
     except UnboundLocalError:
         messagebox.showerror('Error', 'Нет данных в таблице для вентагрегата ВОСК ' + vosk + ' ' + air)
+        var_air = []
+        return var_air
 
 def air_table2(vrs_perf, air2, vosk2):
     if vrs_perf == '01':
-        sheet_form = wb_form['Vent-01']  # переходим на вкладку 01 исполнения
+        sheet_form = wb_form['Vosk-01']  # переходим на вкладку 01 исполнения
     elif vrs_perf == '02':
-        sheet_form = wb_form['Vent-02']  # переходим на вкладку 02 исполнения
+        sheet_form = wb_form['Vosk-02']  # переходим на вкладку 02 исполнения
     elif vrs_perf == '03' or vrs_perf == '04':
-        sheet_form = wb_form['Vent-03(04)']  # переходим на вкладку 03 исполнения
+        sheet_form = wb_form['Vosk-03(04)']  # переходим на вкладку 03 исполнения
 
     air_list = {
         '2.5' + 'АИР56': sheet_form['A4':'D9'],
         '2.5' + 'АИР63': sheet_form['F4':'I9'],
         '2.5' + 'АИР71': sheet_form['K4':'N9'],
-        '2.5' + 'АИР80': sheet_form['P4':'S9']
+        '2.5' + 'АИР80': sheet_form['P4':'S9'],
+        '2.8' + 'АИР56': sheet_form['A13':'D18'],
+        '2.8' + 'АИР63': sheet_form['F13':'I18'],
+        '2.8' + 'АИР71': sheet_form['K13':'N18'],
+        '2.8' + 'АИР80': sheet_form['P13':'S18'],
+        '2.8' + 'АИР90': sheet_form['U13':'X18'],
+        '3.15' + 'АИР56': sheet_form['A22':'D27'],
+        '3.15' + 'АИР63': sheet_form['F22':'I27'],
+        '3.15' + 'АИР71': sheet_form['K22':'N27'],
+        '3.15' + 'АИР80': sheet_form['P22':'S27'],
+        '3.15' + 'АИР90': sheet_form['U22':'X27'],
+        '3.15' + 'АИР100': sheet_form['Z22':'AC27'],
+        '3.55' + 'АИР56': sheet_form['A31':'D36'],
+        '3.55' + 'АИР63': sheet_form['F31':'I36'],
+        '3.55' + 'АИР71': sheet_form['K31':'N36'],
+        '3.55' + 'АИР80': sheet_form['P31':'S36'],
+        '3.55' + 'АИР90': sheet_form['U31':'X36'],
+        '3.55' + 'АИР100': sheet_form['Z31':'AC36'],
+        '4.0' + 'АИР63': sheet_form['A40':'D46'],
+        '4.0' + 'АИР71': sheet_form['F40':'I46'],
+        '4.0' + 'АИР80': sheet_form['K40':'N46'],
+        '4.0' + 'АИР90': sheet_form['P40':'S46'],
+        '4.0' + 'АИР100': sheet_form['U40':'X46'],
+        '4.0' + 'АИР112': sheet_form['Z40':'AC46'],
+        '4.0' + 'АИР132': sheet_form['AE40':'AH46'],
+        '4.5' + 'АИР71': sheet_form['A50':'D56'],
+        '4.5' + 'АИР80': sheet_form['F50':'I56'],
+        '4.5' + 'АИР90': sheet_form['K50':'N56'],
+        '4.5' + 'АИР100': sheet_form['P50':'S56'],
+        '4.5' + 'АИР112': sheet_form['U50':'X56'],
+        '4.5' + 'АИР132': sheet_form['Z50':'AC56'],
+        '4.5' + 'АИР160': sheet_form['AE50':'AH56'],
+        '5.0' + 'АИР71': sheet_form['A60':'D66'],
+        '5.0' + 'АИР80': sheet_form['F60':'I66'],
+        '5.0' + 'АИР90': sheet_form['K60':'N66'],
+        '5.0' + 'АИР100': sheet_form['P60':'S66'],
+        '5.0' + 'АИР112': sheet_form['U60':'X66'],
+        '5.0' + 'АИР132': sheet_form['Z60':'AC66'],
+        '5.0' + 'АИР160': sheet_form['AE60':'AH66'],
+        '5.0' + 'АИР180': sheet_form['AJ60':'AM66'],
+        '5.6' + 'АИР71': sheet_form['A70':'D76'],
+        '5.6' + 'АИР80': sheet_form['F70':'I76'],
+        '5.6' + 'АИР90': sheet_form['K70':'N76'],
+        '5.6' + 'АИР100': sheet_form['P70':'S76'],
+        '5.6' + 'АИР112': sheet_form['U70':'X76'],
+        '5.6' + 'АИР132': sheet_form['Z70':'AC76'],
+        '5.6' + 'АИР160': sheet_form['AE70':'AH76'],
+        '5.6' + 'АИР180': sheet_form['AJ70':'AM76']
     }
     try:
         for key in air_list.keys():
@@ -139,7 +293,9 @@ def air_table2(vrs_perf, air2, vosk2):
                 break
         return var_air2
     except UnboundLocalError:
-        messagebox.showerror('Error', 'Нет данных в таблице для вентагрегата ВОСК ' + vosk2 + ' ' + air)
+        messagebox.showerror('Error', 'Нет данных в таблице для вентагрегата ВОСК ' + vosk2 + ' ' + air2)
+        var_air2 = []
+        return var_air2
 
 def vnv5012_table(vrs_num, vrs_perf, vnv5012):
     if vrs_perf == '01':
@@ -186,6 +342,8 @@ def vnv5012_table(vrs_num, vrs_perf, vnv5012):
         return var_vnv5012
     except UnboundLocalError:
         messagebox.showerror('Error', 'Нет данных в таблице для\nблока ВНВ 5012 VRS ' + vrs_num)
+        var_vnv5012 = []
+        return var_vnv5012
 
 def vov5012_table(vrs_num, vrs_perf, vov5012):
     if vrs_perf == '01':
@@ -197,61 +355,61 @@ def vov5012_table(vrs_num, vrs_perf, vov5012):
 
     vov5012_list = {
         '019' + '180': sheet_form['A4':'D13'], '019' + '220': sheet_form['F4':'I13'],
-        '019' + '280': sheet_form['K4':'N13'], '019' + '360': sheet_form['P4':'S13'],
-        '034' + '180': sheet_form['A4':'D7'], '034' + '220': sheet_form['A4':'D7'],
-        '034' + '280': sheet_form['A4':'D7'], '034' + '360': sheet_form['A4':'D7'],
-        '039' + '180': sheet_form['A4':'D7'], '039' + '220': sheet_form['A4':'D7'],
-        '039' + '280': sheet_form['A4':'D7'], '039' + '360': sheet_form['A4':'D7'],
-        '054' + '180': sheet_form['A4':'D7'], '054' + '220': sheet_form['A4':'D7'],
-        '054' + '280': sheet_form['A4':'D7'], '054' + '360': sheet_form['A4':'D7'],
-        '058' + '180': sheet_form['A4':'D7'], '058' + '220': sheet_form['A4':'D7'],
-        '058' + '280': sheet_form['A4':'D7'], '058' + '360': sheet_form['A4':'D7'],
-        '078' + '180': sheet_form['A4':'D7'], '078' + '220': sheet_form['A4':'D7'],
-        '078' + '280': sheet_form['A4':'D7'], '078' + '360': sheet_form['A4':'D7'],
-        '086' + '180': sheet_form['A4':'D7'], '086' + '220': sheet_form['A4':'D7'],
-        '086' + '280': sheet_form['A4':'D7'], '086' + '360': sheet_form['A4':'D7'],
-        '097' + '180': sheet_form['A4':'D7'], '097' + '220': sheet_form['A4':'D7'],
-        '097' + '280': sheet_form['A4':'D7'], '097' + '360': sheet_form['A4':'D7'],
-        '115' + '180': sheet_form['A4':'D7'], '115' + '220': sheet_form['A4':'D7'],
-        '115' + '280': sheet_form['A4':'D7'], '115' + '360': sheet_form['A4':'D7'],
-        '116' + '180': sheet_form['A4':'D7'], '116' + '220': sheet_form['A4':'D7'],
-        '116' + '280': sheet_form['A4':'D7'], '116' + '360': sheet_form['A4':'D7'],
-        '138' + '180': sheet_form['A4':'D7'], '138' + '220': sheet_form['A4':'D7'],
-        '138' + '280': sheet_form['A4':'D7'], '138' + '360': sheet_form['A4':'D7'],
-        '156' + '180': sheet_form['A4':'D7'], '156' + '220': sheet_form['A4':'D7'],
-        '156' + '280': sheet_form['A4':'D7'], '156' + '360': sheet_form['A4':'D7'],
-        '173' + '180': sheet_form['A4':'D7'], '173' + '220': sheet_form['A4':'D7'],
-        '173' + '280': sheet_form['A4':'D7'], '173' + '360': sheet_form['A4':'D7'],
-        '193' + '180': sheet_form['A4':'D7'], '193' + '220': sheet_form['A4':'D7'],
-        '193' + '280': sheet_form['A4':'D7'], '193' + '360': sheet_form['A4':'D7'],
-        '194' + '180': sheet_form['A4':'D7'], '194' + '220': sheet_form['A4':'D7'],
-        '194' + '280': sheet_form['A4':'D7'], '194' + '360': sheet_form['A4':'D7'],
-        '215' + '180': sheet_form['A4':'D7'], '215' + '220': sheet_form['A4':'D7'],
-        '215' + '280': sheet_form['A4':'D7'], '215' + '360': sheet_form['A4':'D7'],
-        '234' + '180': sheet_form['A4':'D7'], '234' + '220': sheet_form['A4':'D7'],
-        '234' + '280': sheet_form['A4':'D7'], '234' + '360': sheet_form['A4':'D7'],
-        '240' + '180': sheet_form['A4':'D7'], '240' + '220': sheet_form['A4':'D7'],
-        '240' + '280': sheet_form['A4':'D7'], '240' + '360': sheet_form['A4':'D7'],
-        '271' + '180': sheet_form['A4':'D7'], '271' + '220': sheet_form['A4':'D7'],
-        '271' + '280': sheet_form['A4':'D7'], '271' + '360': sheet_form['A4':'D7'],
-        '289' + '180': sheet_form['A4':'D7'], '289' + '220': sheet_form['A4':'D7'],
-        '289' + '280': sheet_form['A4':'D7'], '289' + '360': sheet_form['A4':'D7'],
-        '290' + '180': sheet_form['A4':'D7'], '290' + '220': sheet_form['A4':'D7'],
-        '290' + '280': sheet_form['A4':'D7'], '290' + '360': sheet_form['A4':'D7'],
-        '333' + '180': sheet_form['A4':'D7'], '333' + '220': sheet_form['A4':'D7'],
-        '333' + '280': sheet_form['A4':'D7'], '333' + '360': sheet_form['A4':'D7'],
-        '337' + '180': sheet_form['A4':'D7'], '337' + '220': sheet_form['A4':'D7'],
-        '337' + '280': sheet_form['A4':'D7'], '337' + '360': sheet_form['A4':'D7'],
-        '350' + '180': sheet_form['A4':'D7'], '350' + '220': sheet_form['A4':'D7'],
-        '350' + '280': sheet_form['A4':'D7'], '350' + '360': sheet_form['A4':'D7'],
-        '407' + '180': sheet_form['A4':'D7'], '407' + '220': sheet_form['A4':'D7'],
-        '407' + '280': sheet_form['A4':'D7'], '407' + '360': sheet_form['A4':'D7'],
-        '414' + '180': sheet_form['A4':'D7'], '414' + '220': sheet_form['A4':'D7'],
-        '414' + '280': sheet_form['A4':'D7'], '414' + '360': sheet_form['A4':'D7'],
-        '473' + '180': sheet_form['A4':'D7'], '473' + '220': sheet_form['A4':'D7'],
-        '473' + '280': sheet_form['A4':'D7'], '473' + '360': sheet_form['A4':'D7'],
-        '500' + '180': sheet_form['A4':'D7'], '500' + '220': sheet_form['A4':'D7'],
-        '500' + '280': sheet_form['A4':'D7'], '500' + '360': sheet_form['A4':'D7']
+        '019' + '280': sheet_form['K4':'N13'], '019' + '310': sheet_form['P4':'S13'],
+        '034' + '180': sheet_form['A17':'D26'], '034' + '220': sheet_form['F4':'I13'],
+        '034' + '280': sheet_form['K17':'N26'], '034' + '310': sheet_form['P4':'S13'],
+        '039' + '180': sheet_form['A30':'D39'], '039' + '220': sheet_form['F30':'I39'],
+        '039' + '280': sheet_form['K30':'N39'], '039' + '310': sheet_form['P30':'S39'],
+        '054' + '180': sheet_form['A43':'D52'], '054' + '220': sheet_form['F43':'I52'],
+        '054' + '280': sheet_form['K43':'N52'], '054' + '310': sheet_form['P43':'S52'],
+        '058' + '180': sheet_form['A56':'D65'], '058' + '220': sheet_form['F56':'I65'],
+        '058' + '280': sheet_form['K56':'N65'], '058' + '310': sheet_form['P56':'S65'],
+        '078' + '180': sheet_form['A69':'D79'], '078' + '220': sheet_form['F69':'I79'],
+        '078' + '280': sheet_form['K69':'N79'], '078' + '310': sheet_form['P69':'S79'],
+        '086' + '180': sheet_form['A83':'D92'], '086' + '220': sheet_form['F83':'I92'],
+        '086' + '280': sheet_form['K83':'N92'], '086' + '310': sheet_form['P83':'S92'],
+        '097' + '180': sheet_form['A96':'D106'], '097' + '220': sheet_form['F96':'I106'],
+        '097' + '280': sheet_form['K96':'N106'], '097' + '310': sheet_form['P96':'S106'],
+        '115' + '180': sheet_form['A110':'D120'], '115' + '220': sheet_form['F110':'I120'],
+        '115' + '280': sheet_form['K110':'N120'], '115' + '310': sheet_form['P110':'S120'],
+        '116' + '180': sheet_form['A124':'D134'], '116' + '220': sheet_form['F124':'I134'],
+        '116' + '280': sheet_form['K124':'N134'], '116' + '310': sheet_form['P124':'S134'],
+        '138' + '180': sheet_form['A138':'D148'], '138' + '220': sheet_form['F138':'I148'],
+        '138' + '280': sheet_form['K138':'N148'], '138' + '310': sheet_form['P138':'S148'],
+        '156' + '180': sheet_form['A152':'D163'], '156' + '220': sheet_form['F152':'I163'],
+        '156' + '280': sheet_form['K152':'N163'], '156' + '310': sheet_form['P152':'S163'],
+        '173' + '180': sheet_form['A167':'D176'], '173' + '220': sheet_form['F167':'I176'],
+        '173' + '280': sheet_form['K167':'N176'], '173' + '310': sheet_form['P167':'S176'],
+        '193' + '180': sheet_form['A180':'D191'], '193' + '220': sheet_form['F180':'I913'],
+        '193' + '280': sheet_form['K180':'N191'], '193' + '310': sheet_form['P180':'S191'],
+        '194' + '180': sheet_form['A195':'D206'], '194' + '220': sheet_form['F195':'I206'],
+        '194' + '280': sheet_form['K195':'N206'], '194' + '310': sheet_form['P195':'S206'],
+        '215' + '180': sheet_form['A210':'D221'], '215' + '220': sheet_form['F210':'I221'],
+        '215' + '280': sheet_form['K210':'N221'], '215' + '310': sheet_form['P210':'S221'],
+        '234' + '180': sheet_form['A225':'D236'], '234' + '220': sheet_form['F225':'I236'],
+        '234' + '280': sheet_form['K225':'N236'], '234' + '310': sheet_form['P225':'S236'],
+        '240' + '180': sheet_form['A240':'D251'], '240' + '220': sheet_form['F240':'I251'],
+        '240' + '280': sheet_form['K240':'N251'], '240' + '310': sheet_form['P240':'S251'],
+        '271' + '180': sheet_form['A255':'D266'], '271' + '220': sheet_form['F255':'I266'],
+        '271' + '280': sheet_form['K255':'N266'], '271' + '310': sheet_form['P255':'S266'],
+        '289' + '180': sheet_form['A270':'D281'], '289' + '220': sheet_form['F270':'I281'],
+        '289' + '280': sheet_form['K270':'N281'], '289' + '310': sheet_form['P270':'S281'],
+        '290' + '180': sheet_form['A285':'D296'], '290' + '220': sheet_form['F285':'I296'],
+        '290' + '280': sheet_form['K285':'N296'], '290' + '310': sheet_form['P285':'S296'],
+        '333' + '180': sheet_form['A300':'D311'], '333' + '220': sheet_form['F300':'I311'],
+        '333' + '280': sheet_form['K300':'N311'], '333' + '310': sheet_form['P300':'S311'],
+        '337' + '180': sheet_form['A315':'D326'], '337' + '220': sheet_form['F315':'I326'],
+        '337' + '280': sheet_form['K315':'N326'], '337' + '310': sheet_form['P315':'S326'],
+        '350' + '180': sheet_form['A330':'D341'], '350' + '220': sheet_form['F330':'I341'],
+        '350' + '280': sheet_form['K330':'N341'], '350' + '310': sheet_form['P330':'S341'],
+        '407' + '180': sheet_form['A345':'D356'], '407' + '220': sheet_form['F345':'I356'],
+        '407' + '280': sheet_form['K345':'N356'], '407' + '310': sheet_form['P345':'S356'],
+        '414' + '180': sheet_form['A360':'D371'], '414' + '220': sheet_form['F360':'I371'],
+        '414' + '280': sheet_form['K360':'N371'], '414' + '310': sheet_form['P360':'S371'],
+        '473' + '180': sheet_form['A375':'D386'], '473' + '220': sheet_form['F375':'I386'],
+        '473' + '280': sheet_form['K375':'N386'], '473' + '310': sheet_form['P375':'S386'],
+        '500' + '180': sheet_form['A390':'D401'], '500' + '220': sheet_form['F390':'I401'],
+        '500' + '280': sheet_form['K390':'N401'], '500' + '310': sheet_form['P390':'S401']
     }
     try:
         for key in vov5012_list.keys():
@@ -260,6 +418,8 @@ def vov5012_table(vrs_num, vrs_perf, vov5012):
         return var_vov5012
     except UnboundLocalError:
         messagebox.showerror('Error', 'Нет данных в таблице для\nблока ВОВ 5012 VRS ' + vrs_num)
+        var_vov5012 = []
+        return var_vov5012
 
 def eko_table(vrs_num, vrs_perf):
     if vrs_perf == '01':
@@ -307,6 +467,8 @@ def eko_table(vrs_num, vrs_perf):
         return var_eko
     except UnboundLocalError:
         messagebox.showerror('Error', 'Нет данных в таблице  для\nблока ЭКО VRS ' + vrs_num)
+        var_eko = []
+        return var_eko
 
 def vertklap_table(vrs_num, vrs_perf):
     if vrs_perf == '01':
@@ -354,6 +516,8 @@ def vertklap_table(vrs_num, vrs_perf):
         return var_vertklap
     except UnboundLocalError:
         messagebox.showerror('Error', 'Нет данных в таблице для\nблока ВНВ 5012 VRS ' + vrs_num)
+        var_vertklap = []
+        return var_vertklap
 
 def pp_table(vrs_num, vrs_perf):
     if vrs_perf == '01':
@@ -373,25 +537,18 @@ def pp_table(vrs_num, vrs_perf):
         '086': sheet_form['A64':'D70'],
         '097': sheet_form['A74':'D80'],
         '115': sheet_form['A84':'D90'],
-        '116': sheet_form['A94':'D100'],
-        '138': sheet_form['A104':'D110'],
-        '156': sheet_form['A114':'D120'],
-        '173': sheet_form['A124':'D130'],
-        '193': sheet_form['A134':'D140'],
-        '194': sheet_form['A144':'D150'],
-        '215': sheet_form['A154':'D160'],
-        '234': sheet_form['A164':'D170'],
-        '240': sheet_form['A174':'D180'],
-        '271': sheet_form['A184':'D190'],
-        '289': sheet_form['A194':'D200'],
-        '290': sheet_form['A204':'D210'],
-        '333': sheet_form['A214':'D220'],
-        '337': sheet_form['A224':'D230'],
-        '350': sheet_form['A234':'D240'],
-        '407': sheet_form['A244':'D250'],
-        '414': sheet_form['A254':'D260'],
-        '473': sheet_form['A264':'D270'],
-        '500': sheet_form['A274':'D280']
+        '138': sheet_form['A94':'D100'],
+        '156': sheet_form['A104':'D111'],
+        '173': sheet_form['A115':'D121'],
+        '193': sheet_form['A125':'D132'],
+        '215': sheet_form['A136':'D142'],
+        '234': sheet_form['A146':'D153'],
+        '240': sheet_form['A157':'D164'],
+        '271': sheet_form['A168':'D175'],
+        '289': sheet_form['A179':'D186'],
+        '333': sheet_form['A190':'D197'],
+        '350': sheet_form['A201':'D208'],
+        '473': sheet_form['A212':'D219']
     }
     try:
         for key in pp_list.keys():
@@ -401,6 +558,8 @@ def pp_table(vrs_num, vrs_perf):
         return var_pp
     except UnboundLocalError:
         messagebox.showerror('Error', 'Нет данных в таблице для\nблока клапана вертикального VRS ' + vrs_num)
+        var_pp = []
+        return var_pp
 
 def promkam_table(vrs_num, vrs_perf):
     if vrs_perf == '01':
@@ -448,3 +607,5 @@ def promkam_table(vrs_num, vrs_perf):
         return var_promkam
     except UnboundLocalError:
         messagebox.showerror('Error', 'Нет данных в таблице для\nблока камеры промежуточной VRS ' + vrs_num)
+        var_promkam = []
+        return var_promkam
