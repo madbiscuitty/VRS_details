@@ -27,19 +27,15 @@ class VRS:
                                                    "500"), width=7, state="readonly")
         self.vrs_perf = Combobox(self.root, values=("01", "02", "03", "04"), width=7, state="readonly")
         self.air = Combobox(self.root, values=("АИР56", "АИР63", "АИР71", "АИР80", "АИР90", "АИР100", "АИР112",
-                                               "АИР132", "АИР160", "АИР180"
-                                               #, "АИР225", "АИР250"
-                                               ), width=7, state="readonly")
+                                               "АИР132", "АИР160", "АИР180", "АИР225", "АИР250", "Mot180"), width=7,
+                                                state="readonly")
         self.air2 = Combobox(self.root, values=("АИР56", "АИР63", "АИР71", "АИР80", "АИР90", "АИР100", "АИР112",
-                                                "АИР132", "АИР160", "АИР180"
-                                                #, "АИР225", "АИР250"
-                                                ), width=7, state="readonly")
-        self.vosk = Combobox(self.root, values=("2.5", "2.8", "3.15", "3.55", "4.0", "4.5", "5.0", "5.6"
-                                                #"6.3", "7.1", "8.0", "9.0", "10.0", "11.2", "12.5"
-                                                ), width=7, state="readonly")
-        self.vosk2 = Combobox(self.root, values=("2.5", "2.8", "3.15", "3.55", "4.0", "4.5", "5.0", "5.6"
-                                                 #, "6.3", "7.1", "8.0", "9.0", "10.0", "11.2", "12.5"
-                                                 ), width=7, state="readonly")
+                                                "АИР132", "АИР160", "АИР180", "АИР225", "АИР250", "Mot180"), width=7,
+                                                state="readonly")
+        self.vosk = Combobox(self.root, values=("2.5", "2.8", "3.15", "3.55", "4.0", "4.5", "5.0", "5.6", "6.3",
+                                                "7.1", "8.0", "9.0", "10.0", "11.2", "12.5"), width=7, state="readonly")
+        self.vosk2 = Combobox(self.root, values=("2.5", "2.8", "3.15", "3.55", "4.0", "4.5", "5.0", "5.6","6.3",
+                                                "7.1", "8.0", "9.0", "10.0", "11.2", "12.5"), width=7, state="readonly")
         self.vnv5012_widht = Combobox(self.root, values=("160", "180"), width=7, state="readonly")
        #self.vnv4816_widht = Combobox(self.root, values=("240", "320", "400"), width=7, state="readonly")
         self.vov5012_widht = Combobox(self.root, values=("180", "220", "260", "310"), width=7, state="readonly")
@@ -184,7 +180,7 @@ class VRS:
         Button(self.root, width=207, height=40, image=self.logo_close, padx=10, pady=20,
                command=self.root.destroy).grid(row=15, column=1, columnspan=3, sticky=W)  # Кнопка закрытия
         self.pb.grid(row=16, columnspan=3)
-        Label(self.root, bg = bgColor, text="v0.2.1b", justify=LEFT).grid(row=16, column=3, sticky=E)
+        Label(self.root, bg = bgColor, text="v0.3.0rc", justify=LEFT).grid(row=16, column=3, sticky=E)
     # Конопка INFO
     def info(self, title="INFO", resizable=(False, False), icon=r"resourses/info.ico"):
         draw = tkinter.Toplevel()
