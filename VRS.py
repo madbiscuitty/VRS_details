@@ -55,6 +55,7 @@ class VRS:
         self.vertklapbox = IntVar()
         self.ppbox = IntVar()
         self.promkambox = IntVar()
+        self.roof = IntVar()
         count = ([i for i in range(1,11)])
         self.entryfilter = Spinbox(self.root, values=(count), bd=2)  # заводим спинбокс
         self.entryvent = Spinbox(self.root, values=(count), width=7, bd=2)
@@ -171,13 +172,19 @@ class VRS:
         Checkbutton(self.root, text="Блок камеры промежуточной,\nповорот вверх(вниз)",justify=LEFT, bg = bgColor,
                     font=deFont, variable=self.promkambox).grid(row=12, column=0, sticky=W)  # строка чекбокса
         self.entrypromkam.grid(row=12, column=1, columnspan=3, sticky=W+E, padx=5, pady=8) # рисуем спинбокс
+        #Checkbutton(self.root, text="Крыша", justify=LEFT, bg=bgColor,
+                    #font=deFont, variable=self.roof).grid(row=13, column=0, sticky=W) # строка чекбокса
+        Button(self.root, text="Расчет крыши", width=25, height=1, padx=5, pady=5, font=deFont,
+               command=self.roof_window).grid(row=13, column=1, columnspan=3) #Кнопка выгрузки
+        Label(self.root, text="______________________________________________", justify=LEFT, bg = bgColor, font=deFont).grid(
+                                                                        row=14, column=0, columnspan=4)
         # Кнопки выгрузки и закрытия
-        Button(self.root, width=230, height=40, image=self.logo_upload, pady=20, command=self.action).grid(row=13,
+        Button(self.root, width=230, height=40, image=self.logo_upload, pady=20, command=self.action).grid(row=15,
                                                                                       column=0, sticky=S)  # Кнопка выгрузки
         Button(self.root, width=207, height=40, image=self.logo_close, padx=10, pady=20,
-               command=self.root.destroy).grid(row=13, column=1, columnspan=3, sticky=W)  # Кнопка закрытия
-        self.pb.grid(row=14, columnspan=3)
-        Label(self.root, bg = bgColor, text="v0.1.2b", justify=LEFT).grid(row=14, column=3, sticky=E)
+               command=self.root.destroy).grid(row=15, column=1, columnspan=3, sticky=W)  # Кнопка закрытия
+        self.pb.grid(row=16, columnspan=3)
+        Label(self.root, bg = bgColor, text="v0.2.1b", justify=LEFT).grid(row=16, column=3, sticky=E)
     # Конопка INFO
     def info(self, title="INFO", resizable=(False, False), icon=r"resourses/info.ico"):
         draw = tkinter.Toplevel()
@@ -218,7 +225,183 @@ class VRS:
                          "мм\n11-12 рядов - 310 мм",
               justify=LEFT, padx=15, pady=15, bg='#dbdbdb', font=("", 10, "bold")).grid(row=0, column=0, sticky=W)
         Button(draw, width=8, height=2, text="Ок", font=("", 10), command=draw.destroy).grid(row=1, column=0)
+    #Кнопка расчета крыши
+    def roof_window(self, title="Расчет крыши", resizable=(False, False), icon=r"resourses/info.ico"):
+        draw = tkinter.Toplevel()
+        draw.title(title)
+        draw.resizable(resizable[0], resizable[1])
+        draw.configure(bg='#dbdbdb')
+        if icon:
+            draw.iconbitmap(icon)
 
+        draw.entryfirstfloor = Entry(draw, width=32)
+        draw.entrywidthfloor = Entry(draw, width=32)
+
+        def resolve():
+            roof_length = int(draw.entryfirstfloor.get()) + 280
+            roof_width = int(draw.entrywidthfloor.get()) + 280
+            screw = (int(draw.entryfirstfloor.get()) + int(draw.entrywidthfloor.get())) * 2 / 250
+            Label(draw, text='              ', bg='#dbdbdb', justify=LEFT, font=("", 10, "bold")).grid(row=5, column=1,
+                                                                                                     sticky=W)
+            Label(draw, text='              ', bg='#dbdbdb', justify=LEFT, font=("", 10, "bold")).grid(row=6, column=1,
+                                                                                                     sticky=W)
+            Label(draw, text=str(roof_length) + ' мм', bg='#dbdbdb', justify=LEFT, font=("", 10,
+                                   "bold")).grid(row=5, column=1, sticky=W)
+            Label(draw, text=str(roof_width) + ' мм', bg='#dbdbdb', justify=LEFT, font=("", 10,
+                                   "bold")).grid(row=6, column=1, sticky=W)
+            Label(draw, text='            ', bg='#dbdbdb', justify=LEFT, font=("", 10, "bold")).grid(row=8, column=1,
+                                                                                                     sticky=W)
+            Label(draw, text='       ', bg='#dbdbdb', justify=LEFT, font=("", 10, "bold")).grid(row=8, column=2,
+                                                                                                     sticky=W)
+            Label(draw, text='                      ', bg='#dbdbdb', justify=LEFT, font=("", 10, "bold")).grid(row=8,
+                                                                                         column=3, sticky=W)
+            Label(draw, text='            ', bg='#dbdbdb', justify=LEFT, font=("", 10, "bold")).grid(row=9, column=1,
+                                                                                                     sticky=W)
+            Label(draw, text='       ', bg='#dbdbdb', justify=LEFT, font=("", 10, "bold")).grid(row=9, column=2,
+                                                                                                sticky=W)
+            Label(draw, text='                      ', bg='#dbdbdb', justify=LEFT, font=("", 10, "bold")).grid(row=9,
+                                                                                              column=3, sticky=W)
+            Label(draw, text='            ', bg='#dbdbdb', justify=LEFT, font=("", 10, "bold")).grid(row=10, column=1,
+                                                                                                     sticky=W)
+            Label(draw, text='       ', bg='#dbdbdb', justify=LEFT, font=("", 10, "bold")).grid(row=10, column=2,
+                                                                                                sticky=W)
+            Label(draw, text='                      ', bg='#dbdbdb', justify=LEFT, font=("", 10, "bold")).grid(row=10,
+                                                                                                     column=3, sticky=W)
+            Label(draw, text='            ', bg='#dbdbdb', justify=LEFT, font=("", 10, "bold")).grid(row=11, column=1,
+                                                                                                     sticky=W)
+            Label(draw, text='        ', bg='#dbdbdb', justify=LEFT, font=("", 10, "bold")).grid(row=11, column=2,
+                                                                                                sticky=W)
+            Label(draw, text='                        ', bg='#dbdbdb', justify=LEFT, font=("", 10, "bold")).grid(row=11,
+                                                                                              column=3, sticky=W)
+            Label(draw, text=str(round(screw)) + ' шт', bg='#dbdbdb', justify=LEFT, font=("", 10,
+                                                                                       "bold")).grid(row=12, column=1,
+                                                                                                     sticky=W)
+            if int(draw.entryfirstfloor.get()) <= 830:
+                firstfloor_list0 = int(draw.entryfirstfloor.get()) + 280
+                Spaint_list0 = ((roof_width + 56.4) * (firstfloor_list0 + 56.4) - (4 * (29.2 * 29.2))) / 1000000
+                Label(draw, text=str(firstfloor_list0) + ' мм', bg='#dbdbdb', justify=LEFT, font=("", 10,
+                        "bold")).grid(row=8, column=1, sticky=W)
+                Label(draw, text='1 шт', bg='#dbdbdb', font=("", 10, "bold")).grid(row=8, column=2, sticky=W)
+                Label(draw, text='Sпокр ' + str(round((Spaint_list0), 2)) + ' м2', bg='#dbdbdb', font=("", 10,
+                                                      "bold")).grid(row=8, column=3, sticky=W)
+            elif int(draw.entryfirstfloor.get()) > 830 and int(draw.entryfirstfloor.get()) <= 1975:
+                firstfloor_roof = int(draw.entryfirstfloor.get()) + 280
+                firstfloor_list1 = firstfloor_roof // 2
+                firstfloor_list2 = firstfloor_roof // 2
+                Spaint_list1 = ((firstfloor_list1+86.6) * (roof_width + 56.4) - ((2 * (29.2 ** 2))+(2 * (
+                        53.4 * 29.2)))) / 1000000
+                Spaint_list2 = ((firstfloor_list2 + 86.6) * (roof_width + 56.4) - ((2 * (29.2 ** 2)) + (2 * (23.2 *
+                        30.2)))) / 1000000
+                Label(draw, text=str(firstfloor_list1) + ' мм', bg='#dbdbdb', font=("", 10,
+                   "bold")).grid(row=9, column=1, sticky=W)
+                Label(draw, text='1 шт', bg='#dbdbdb', font=("", 10, "bold")).grid(row=9, column=2, sticky=W)
+                Label(draw, text=str(firstfloor_list2) + ' мм', bg='#dbdbdb', font=("", 10,
+                   "bold")).grid(row=10, column=1, sticky=W)
+                Label(draw, text='1 шт', bg='#dbdbdb', font=("", 10, "bold")).grid(row=10, column=2, sticky=W)
+                Label(draw, text='Sпокр ' + str(round((Spaint_list1), 2)) + ' м2', bg='#dbdbdb',
+                      font=("", 10, "bold")).grid(row=9, column=3, sticky=W)
+                Label(draw, text='Sпокр ' + str(round((Spaint_list2), 2)) + ' м2', bg='#dbdbdb',
+                      font=("", 10, "bold")).grid(row=10, column=3, sticky=W)
+            elif int(draw.entryfirstfloor.get()) > 1975 and int(draw.entryfirstfloor.get()) <= 3020:
+                firstfloor_roof = int(draw.entryfirstfloor.get()) + 280
+                firstfloor_list1 = firstfloor_roof // 3
+                firstfloor_list2 = firstfloor_roof // 3
+                firstfloor_list3 = firstfloor_roof // 3
+                Spaint_list1 = ((firstfloor_list1 + 86.6) * (roof_width + 56.4) - ((2 * (29.2 ** 2)) + (2 * (
+                        53.4 * 29.2)))) / 1000000
+                Spaint_list2 = ((firstfloor_list2 + 86.6) * (roof_width + 56.4) - ((2 * (29.2 ** 2)) + (2 * (23.2 *
+                        30.2)))) / 1000000
+                Spaint_list3 = ((firstfloor_list3 + 86.6) * (roof_width + 56.4) - ((2 * (29.2 ** 2)) + (2 * (53.4 *
+                        30.2)))) / 1000000
+                Label(draw, text=str(firstfloor_list1) + ' мм', bg='#dbdbdb', font=("", 10,"bold")).grid(row=9,
+                                                                                                column=1, sticky=W)
+                Label(draw, text='1 шт', bg='#dbdbdb', font=("", 10, "bold")).grid(row=9, column=2, sticky=W)
+                Label(draw, text=str(firstfloor_list2) + ' мм', bg='#dbdbdb', font=("", 10,
+                    "bold")).grid(row=10, column=1, sticky=W)
+                Label(draw, text='1 шт', bg='#dbdbdb', font=("", 10, "bold")).grid(row=10, column=2, sticky=W)
+                Label(draw, text=str(firstfloor_list3) + ' мм', bg='#dbdbdb', font=("", 10,
+                    "bold")).grid(row=11, column=1, sticky=W)
+                Label(draw, text='1 шт', bg='#dbdbdb', font=("", 10, "bold")).grid(row=11, column=2, sticky=W)
+                Label(draw, text='Sпокр ' + str(round((Spaint_list1), 2)) + ' м2', bg='#dbdbdb',
+                      font=("", 10, "bold")).grid(row=9, column=3, sticky=W)
+                Label(draw, text='Sпокр ' + str(round((Spaint_list2), 2)) + ' м2', bg='#dbdbdb',
+                      font=("", 10, "bold")).grid(row=10, column=3, sticky=W)
+                Label(draw, text='Sпокр ' + str(round((Spaint_list3), 2)) + ' м2', bg='#dbdbdb',
+                      font=("", 10, "bold")).grid(row=11, column=3, sticky=W)
+            elif int(draw.entryfirstfloor.get()) > 3020 and int(draw.entryfirstfloor.get()) < 3110:
+                firstfloor_roof = int(draw.entryfirstfloor.get()) + 280
+                firstfloor_list1 = 1115
+                firstfloor_list2 = 1140
+                firstfloor_list3 = roof1_length - 2255
+                Spaint_list1 = ((firstfloor_list1 + 86.6) * (roof_width + 56.4) - ((2 * (29.2 ** 2)) + (2 * (
+                        53.4 * 29.2)))) / 1000000
+                Spaint_list2 = ((firstfloor_list2 + 86.6) * (roof_width + 56.4) - ((2 * (29.2 ** 2)) + (2 * (23.2 *
+                                          30.2)))) / 1000000
+                Spaint_list3 = ((firstfloor_list3 + 86.6) * (roof_width + 56.4) - ((2 * (29.2 ** 2)) + (2 * (53.4 *
+                                          30.2)))) / 1000000
+                Label(draw, text=str(firstfloor_list1) + ' мм', bg='#dbdbdb', font=("", 10,
+                    "bold")).grid(row=9, column=1, sticky=W)
+                Label(draw, text='1 шт', bg='#dbdbdb', font=("", 10, "bold")).grid(row=9, column=2, sticky=W)
+                Label(draw, text=str(firstfloor_list2) + ' мм', bg='#dbdbdb', font=("", 10,
+                    "bold")).grid(row=10, column=1, sticky=W)
+                Label(draw, text='1 шт', bg='#dbdbdb', font=("", 10, "bold")).grid(row=10, column=2, sticky=W)
+                Label(draw, text=str(firstfloor_list3) + ' мм', bg='#dbdbdb', font=("", 10,
+                    "bold")).grid(row=11, column=1, sticky=W)
+                Label(draw, text='1 шт', bg='#dbdbdb', font=("", 10, "bold")).grid(row=11, column=2, sticky=W)
+                Label(draw, text='Sпокр ' + str(round((Spaint_list1), 2)) + ' м2', bg='#dbdbdb',
+                      font=("", 10, "bold")).grid(row=9, column=3, sticky=W)
+                Label(draw, text='Sпокр ' + str(round((Spaint_list2), 2)) + ' м2', bg='#dbdbdb',
+                      font=("", 10, "bold")).grid(row=10, column=3, sticky=W)
+                Label(draw, text='Sпокр ' + str(round((Spaint_list3), 2)) + ' м2', bg='#dbdbdb',
+                      font=("", 10, "bold")).grid(row=11, column=3, sticky=W)
+            else:
+                firstfloor_roof = int(draw.entryfirstfloor.get()) + 280
+                k = ((firstfloor_roof - 2114) // 1135)+1
+                firstfloor_list1 = (firstfloor_roof - (1135*k)) // 2
+                firstfloor_list2 = (firstfloor_roof - (1135*k)) // 2
+                firstfloor_list3 = 1135
+                Spaint_list1 = ((firstfloor_list1 + 86.6) * (roof_width + 56.4) - ((2 * (29.2 ** 2)) + (2 * (
+                        53.4 * 29.2)))) / 1000000
+                Spaint_list2 = ((firstfloor_list2 + 86.6) * (roof_width + 56.4) - ((2 * (29.2 ** 2)) + (2 * (23.2 *
+                                       30.2)))) / 1000000
+                Spaint_list3 = ((firstfloor_list3 + 86.6) * (roof_width + 56.4) - ((2 * (29.2 ** 2)) + (2 * (53.4 *
+                                       30.2)))) / 1000000
+                Label(draw, text=str(firstfloor_list1) + ' мм', bg='#dbdbdb', font=("", 10,
+                    "bold")).grid(row=9, column=1, sticky=W)
+                Label(draw, text='1 шт', bg='#dbdbdb', font=("", 10, "bold")).grid(row=9, column=2, sticky=W)
+                Label(draw, text=str(firstfloor_list2) + ' мм', bg='#dbdbdb', font=("", 10,
+                    "bold")).grid(row=10, column=1, sticky=W)
+                Label(draw, text='1 шт', bg='#dbdbdb', font=("", 10, "bold")).grid(row=10, column=2, sticky=W)
+                Label(draw, text=str(firstfloor_list3) + ' мм', bg='#dbdbdb', font=("", 10,
+                    "bold")).grid(row=11, column=1, sticky=W)
+                Label(draw, text=str(k) + ' шт', bg='#dbdbdb', font=("", 10, "bold")).grid(row=11, column=2, sticky=W)
+                Label(draw, text='Sпокр ' + str(round((Spaint_list1), 2)) + ' м2', bg='#dbdbdb',
+                      font=("", 10, "bold")).grid(row=9, column=3, sticky=W)
+                Label(draw, text='Sпокр ' + str(round((Spaint_list2), 2)) + ' м2', bg='#dbdbdb',
+                      font=("", 10, "bold")).grid(row=10, column=3, sticky=W)
+                Label(draw, text='Sпокр ' + str(round((Spaint_list3) * k, 2)) + ' м2', bg='#dbdbdb',
+                      font=("", 10, "bold")).grid(row=11, column=3, sticky=W)
+
+        Label(draw, text="Расчет крыши", padx=10, pady=10, bg='#dbdbdb', font=("", 12,
+                  "bold")).grid(row=0, column=0, columnspan=4)
+        Label(draw, text="Длина блока", bg='#dbdbdb', font=("", 10, "bold")).grid(row=1, column=0, sticky=W)
+        draw.entryfirstfloor.grid(row=1, column=1, columnspan=3, padx=5, pady=8)
+        Label(draw, text="Ширина блока", bg='#dbdbdb', font=("", 10, "bold")).grid(row=2, column=0, sticky=W)
+        draw.entrywidthfloor.grid(row=2, column=1, columnspan=3, padx=5, pady=8)
+        Label(draw, text="Габаритные размеры крыши:", bg='#dbdbdb', font=("", 10, "bold")).grid(row=3,column=0)
+        Label(draw, text="Длина крыши:", bg='#dbdbdb', font=("", 10, "bold")).grid(row=5, column=0, sticky=W)
+        Label(draw, text="Ширина крыши:", bg='#dbdbdb', font=("", 10, "bold")).grid(row=6, column=0, sticky=W)
+        Label(draw, text="Лист 0", bg='#dbdbdb', font=("", 10, "bold")).grid(row=8, column=0, sticky=W)
+        Label(draw, text='Лист 1', bg='#dbdbdb', font=("", 10, "bold")).grid(row=9, column=0, sticky=W)
+        Label(draw, text="Лист 2", bg='#dbdbdb', font=("", 10, "bold")).grid(row=10, column=0, sticky=W)
+        Label(draw, text="Лист 3", bg='#dbdbdb', font=("", 10, "bold")).grid(row=11, column=0, sticky=W)
+        Label(draw, text="Кол-во саморезов / шайб", bg='#dbdbdb', font=("", 10, "bold")).grid(row=12, column=0,
+                                                                                              sticky=W)
+        Label(draw, text="------------------------------------------------------------------------------------",
+              bg='#dbdbdb', font=("", 10, "bold")).grid(row=13, column=0, columnspan=4, sticky=W+E)
+
+        Button(draw, width=15, height=2, text="Расчет", font=("", 10), command=resolve).grid(
+            row=14, columnspan=4)
     # Вывод данных в excel
     def action(self):
         # Открываем excel документ

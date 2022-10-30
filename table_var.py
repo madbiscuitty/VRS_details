@@ -356,8 +356,8 @@ def vov5012_table(vrs_num, vrs_perf, vov5012):
     vov5012_list = {
         '019' + '180': sheet_form['A4':'D13'], '019' + '220': sheet_form['F4':'I13'],
         '019' + '280': sheet_form['K4':'N13'], '019' + '310': sheet_form['P4':'S13'],
-        '034' + '180': sheet_form['A17':'D26'], '034' + '220': sheet_form['F4':'I13'],
-        '034' + '280': sheet_form['K17':'N26'], '034' + '310': sheet_form['P4':'S13'],
+        '034' + '180': sheet_form['A17':'D26'], '034' + '220': sheet_form['F17':'I26'],
+        '034' + '280': sheet_form['K17':'N26'], '034' + '310': sheet_form['P17':'S26'],
         '039' + '180': sheet_form['A30':'D39'], '039' + '220': sheet_form['F30':'I39'],
         '039' + '280': sheet_form['K30':'N39'], '039' + '310': sheet_form['P30':'S39'],
         '054' + '180': sheet_form['A43':'D52'], '054' + '220': sheet_form['F43':'I52'],
@@ -609,3 +609,25 @@ def promkam_table(vrs_num, vrs_perf):
         messagebox.showerror('Error', 'Нет данных в таблице для\nблока камеры промежуточной VRS ' + vrs_num)
         var_promkam = []
         return var_promkam
+
+def roof_calc(vrs_num, firstfloor_width, secondfloor_width):
+    if vrs_num == '019' or vrs_num == '039': roof_length = 1030
+    elif vrs_num == '034': roof_length = 1180
+    elif vrs_num == '054': roof_length = 1375
+
+    firstfloor_roof = firstfloor_width + 140
+    firstfloor_list1 = {firstfloor_roof // 3: roof_length}
+    firstfloor_list2 = {firstfloor_roof // 3: roof_length}
+
+
+    secondfloor_roof = secondfloor_width + 280
+    secondfloor_list1 = {secondfloor_roof // 3: roof_length}
+    secondfloor_list2 = {secondfloor_roof // 3: roof_length}
+    secondfloor_list3 = {secondfloor_roof // 3: roof_length}
+    return (firstfloor_list1, firstfloor_list2, secondfloor_list1, secondfloor_list2, secondfloor_list3)
+
+
+
+
+
+
